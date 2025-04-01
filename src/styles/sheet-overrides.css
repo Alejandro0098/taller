@@ -1,0 +1,25 @@
+/* Mejoras de estilo para los inputs dentro del sheet */
+.sheet-content-inputs-enhanced input,
+.sheet-content-inputs-enhanced select,
+.sheet-content-inputs-enhanced .select-trigger {
+    background-color: rgba(40, 40, 40, 0.8) !important;
+    border: 1px solid rgba(212, 166, 54, 0.3) !important;
+    color: white !important;
+}
+
+.sheet-content-inputs-enhanced input:focus,
+.sheet-content-inputs-enhanced select:focus,
+.sheet-content-inputs-enhanced .select-trigger:focus {
+    border-color: rgba(212, 166, 54, 0.6) !important;
+    box-shadow: 0 0 0 2px rgba(212, 166, 54, 0.2) !important;
+}
+
+/* Estilo para el botón de cierre (X) */
+.sheet-close-button-golden[data-state="open"] button {
+    color: #D4A636 !important;
+}
+
+.sheet-close-button-golden[data-state="open"] button:hover {
+    color: #E2B94D !important;
+    background-color: rgba(212, 166, 54, 0.1) !important;
+} 

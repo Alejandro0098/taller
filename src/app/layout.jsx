@@ -2,8 +2,8 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import '../../styles/globals.css'
 // import { ThemeProvider } from "@/components/theme-provider"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
+import Header from "@/components/Header.jsx"
+import Footer from "@/components/Footer.jsx"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -18,10 +18,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={`${inter.className} overflow-scroll`}>
-        {/* <Header /> */}
+      <body className={`${inter.className} bg-premium-gray-medium`}>
+        <Header />
         {children}
-        {/* <Footer /> */}
+        <Footer />
         {/* <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
         </ThemeProvider> */}
       </body>

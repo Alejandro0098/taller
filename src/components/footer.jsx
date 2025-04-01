@@ -1,210 +1,89 @@
+import { Phone, Clock, Mail, Instagram, Youtube, Music } from "lucide-react"
 import Link from "next/link"
-import { Facebook, Instagram, Twitter, MapPin, Phone, Mail, Clock, Car, Award, Zap, Shield } from "lucide-react"
+
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-premium-black to-[#1a1a2e] py-12 border-t border-premium-gray-light relative">
-      {/* Patrón de fondo sutil */}
-      <div
-        className="absolute inset-0 opacity-5"
-        style={{
-          backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)",
-          backgroundSize: "20px 20px",
-        }}
-      ></div>
-
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-          <div>
-            <h3 className="font-bold text-lg mb-4 text-white flex items-center">
-              <span className="bg-gradient-to-r from-premium-red to-orange-500 text-white p-1 rounded mr-2">
-                <Car className="h-5 w-5" />
-              </span>
-              AutoPremium
+    <footer className="bg-[#1A1A1A] border-t border-[#333] shadow-lg">
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="flex flex-col md:flex-row md:flex-wrap lg:justify-evenly gap-16">
+          {/* Contacto */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-gray-100 border-b border-gold-500 pb-2 inline-block self-center">
+              Contacto
             </h3>
-            <p className="text-white/70">Ofreciendo vehículos de lujo y servicios premium desde 1985.</p>
-            <div className="mt-4 p-4 bg-gradient-to-br from-premium-gray-medium to-premium-gray-dark rounded-lg border border-premium-gray-light">
-              <p className="text-white/80 text-sm italic">
-                "Nuestra pasión es encontrar el vehículo perfecto para cada cliente."
+            <div className="space-y-3">
+              <p className="flex items-center text-gray-300">
+                <Phone className="w-4 h-4 mr-3 text-gold-500" />
+                +34 123 456 789
+              </p>
+              <p className="flex items-center text-gray-300">
+                <Mail className="w-4 h-4 mr-3 text-gold-500" />
+                vehimesmotors@outlook.com
+              </p>
+              <p className="flex items-center text-gray-300">
+                <Clock className="w-4 h-4 mr-3 text-gold-500" />
+                L-V: 9:00-19:00 | S: 10:00-14:00
               </p>
             </div>
           </div>
-
-          <div>
-            <h3 className="font-bold text-lg mb-4 text-white flex items-center">
-              <Award className="h-5 w-5 mr-2 text-amber-500" />
-              Enlaces Rápidos
+          {/* Redes sociales */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-gray-100 border-b border-gold-500 pb-2 inline-block mb-2">
+              Síguenos
             </h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/" className="text-white/70 hover:text-premium-red transition-colors flex items-center">
-                  <span className="w-1.5 h-1.5 bg-premium-red rounded-full mr-2"></span>
-                  Inicio
-                </Link>
-              </li>
-              <li>
-                <Link href="/cars" className="text-white/70 hover:text-cyan-500 transition-colors flex items-center">
-                  <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full mr-2"></span>
-                  Vehículos
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/car-detail"
-                  className="text-white/70 hover:text-amber-500 transition-colors flex items-center"
-                >
-                  <span className="w-1.5 h-1.5 bg-amber-500 rounded-full mr-2"></span>
-                  Detalle de Vehículo
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="text-white/70 hover:text-emerald-500 transition-colors flex items-center"
-                >
-                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-2"></span>
-                  Sobre Nosotros
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-white/70 hover:text-purple-500 transition-colors flex items-center"
-                >
-                  <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mr-2"></span>
-                  Contacto
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-bold text-lg mb-4 text-white flex items-center">
-              <Zap className="h-5 w-5 mr-2 text-emerald-500" />
-              Servicios
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/services/tow-truck"
-                  className="text-white/70 hover:text-cyan-500 transition-colors flex items-center"
-                >
-                  <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full mr-2"></span>
-                  Servicio de Grúas
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/custom-import"
-                  className="text-white/70 hover:text-amber-500 transition-colors flex items-center"
-                >
-                  <span className="w-1.5 h-1.5 bg-amber-500 rounded-full mr-2"></span>
-                  Importación a Medida
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/financing"
-                  className="text-white/70 hover:text-emerald-500 transition-colors flex items-center"
-                >
-                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-2"></span>
-                  Financiación
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/maintenance"
-                  className="text-white/70 hover:text-purple-500 transition-colors flex items-center"
-                >
-                  <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mr-2"></span>
-                  Mantenimiento
-                </Link>
-              </li>
-            </ul>
-            <div className="mt-6 flex flex-wrap gap-2">
-              <span className="px-2 py-1 bg-premium-red/20 text-premium-red text-xs rounded-full">Deportivos</span>
-              <span className="px-2 py-1 bg-cyan-500/20 text-cyan-500 text-xs rounded-full">Sedán</span>
-              <span className="px-2 py-1 bg-amber-500/20 text-amber-500 text-xs rounded-full">SUV</span>
-              <span className="px-2 py-1 bg-emerald-500/20 text-emerald-500 text-xs rounded-full">Eléctricos</span>
+            <div className="flex space-x-4">
+              <a href="#" className="bg-[#333] text-white/80 p-3 rounded-full hover:bg-gold-500 hover:text-[#111] transition-colors">
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a href="#" className="bg-[#333] text-white/80 p-3 rounded-full hover:bg-gold-500 hover:text-[#111] transition-colors">
+                <Youtube className="w-5 h-5" />
+              </a>
+              <a href="#" className="bg-[#333] text-white/80 p-3 rounded-full hover:bg-gold-500 hover:text-[#111] transition-colors">
+                <Music className="w-5 h-5" />
+              </a>
             </div>
           </div>
 
-          <div>
-            <h3 className="font-bold text-lg mb-4 text-white flex items-center">
-              <Shield className="h-5 w-5 mr-2 text-purple-500" />
-              Contacto
+
+          {/* Visítanos */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-gray-100 border-b border-gold-500 pb-2 inline-block">
+              Visítanos
             </h3>
-            <address className="not-italic space-y-3">
-              <div className="flex items-start">
-                <div className="bg-gradient-to-r from-premium-red to-orange-500 p-1.5 rounded-full mr-2 mt-0.5 flex-shrink-0">
-                  <MapPin className="h-3.5 w-3.5 text-white" />
-                </div>
-                <p className="text-white/70">Calle Principal 123, 28001 Madrid, España</p>
-              </div>
-              <div className="flex items-start">
-                <div className="bg-gradient-to-r from-cyan-500 to-blue-600 p-1.5 rounded-full mr-2 mt-0.5 flex-shrink-0">
-                  <Phone className="h-3.5 w-3.5 text-white" />
-                </div>
-                <p className="text-white/70">+34 91 123 4567</p>
-              </div>
-              <div className="flex items-start">
-                <div className="bg-gradient-to-r from-amber-500 to-yellow-400 p-1.5 rounded-full mr-2 mt-0.5 flex-shrink-0">
-                  <Mail className="h-3.5 w-3.5 text-white" />
-                </div>
-                <p className="text-white/70">info@concesionario.es</p>
-              </div>
-              <div className="flex items-start">
-                <div className="bg-gradient-to-r from-emerald-500 to-green-600 p-1.5 rounded-full mr-2 mt-0.5 flex-shrink-0">
-                  <Clock className="h-3.5 w-3.5 text-white" />
-                </div>
-                <div className="text-white/70">
-                  <p>Lun - Vie: 9:00 - 20:00</p>
-                  <p>Sáb: 10:00 - 18:00</p>
-                </div>
-              </div>
-            </address>
-            <div className="flex space-x-3 mt-4">
-              <Link
-                href="https://facebook.com"
-                className="p-2 rounded-full bg-gradient-to-r from-premium-red to-orange-500 text-white hover:opacity-90 transition-opacity"
-              >
-                <Facebook className="h-4 w-4" />
-                <span className="sr-only">Facebook</span>
-              </Link>
-              <Link
-                href="https://instagram.com"
-                className="p-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:opacity-90 transition-opacity"
-              >
-                <Instagram className="h-4 w-4" />
-                <span className="sr-only">Instagram</span>
-              </Link>
-              <Link
-                href="https://twitter.com"
-                className="p-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 text-white hover:opacity-90 transition-opacity"
-              >
-                <Twitter className="h-4 w-4" />
-                <span className="sr-only">Twitter</span>
-              </Link>
+            <div className="space-y-3 text-gray-300">
+              <p>Calle Premium, 123</p>
+              <p>28001 Madrid</p>
+              <p>España</p>
             </div>
           </div>
+
+          {/* Legal */}
+          {/* <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-gray-100 border-b border-gold-500 pb-2 inline-block">
+              Legal
+            </h3>
+            <div className="space-y-3 text-gray-300">
+              <Link href="/politica-privacidad" className="block hover:text-gold-500 transition-colors">
+                Política de privacidad
+              </Link>
+              <Link href="/terminos-condiciones" className="block hover:text-gold-500 transition-colors">
+                Términos y condiciones
+              </Link>
+              <Link href="/aviso-legal" className="block hover:text-gold-500 transition-colors">
+                Aviso legal
+              </Link>
+            </div>
+          </div> */}
+
+
         </div>
 
-        <div className="border-t border-premium-gray-light mt-12 pt-8 text-center text-white/70">
-          <p>&copy; {new Date().getFullYear()} AutoPremium. Todos los derechos reservados.</p>
-          <div className="flex justify-center space-x-4 mt-2 text-xs">
-            <Link href="/privacy" className="hover:text-premium-red transition-colors">
-              Privacidad
-            </Link>
-            <Link href="/terms" className="hover:text-cyan-500 transition-colors">
-              Términos
-            </Link>
-            <Link href="/cookies" className="hover:text-amber-500 transition-colors">
-              Cookies
-            </Link>
-          </div>
+        {/* Derechos */}
+        <div className="border-t border-[#333] mt-12 pt-6 text-center text-sm text-gray-400">
+          <p>© {new Date().getFullYear()} Vehimes Motors. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>
   )
 }
-

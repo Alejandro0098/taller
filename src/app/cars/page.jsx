@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -12,7 +13,7 @@ import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription } from "@/components/ui/sheet"
 import { Separator } from "@/components/ui/separator"
 import {
     Car,
@@ -30,13 +31,296 @@ import {
     Ban,
     ArrowUpDown,
     ChevronDown,
+    Lock
 } from "lucide-react"
+import CarCard from "@/components/CarCard"
+
+import { CarFilters } from "./Filters"
+
+function sortByPriceAsc(a, b) {
+    if (a.price < b.price) {
+        return -1;
+    }
+    if (a.price > b.price) {
+        return 1;
+    }
+    return 0;
+}
+
+function sortByPriceDesc(a, b) {
+    if (a.price > b.price) {
+        return -1;
+    }
+    if (a.price < b.price) {
+        return 1;
+    }
+    return 0;
+}
+
+function sortByYearAsc(a, b) {
+    if (a.year < b.year) {
+        return -1;
+    }
+}
+
+function sortByYearDesc(a, b) {
+    if (a.year < b.year) {
+        return 1;
+    }
+}
+
+function sortByEngineAsc(a, b) {
+    if (a.engine < b.engine) {
+        return -1;
+    }
+}
+
+function sortByEngineDesc(a, b) {
+    if (a.engine < b.engine) {
+        return 1;
+    }
+}
+
+
+
+function sortCars(cars, sortBy) {
+
+
+    let soldCars = []
+    let availableCars = []
+    cars.forEach(car => {
+        if (car.status === 'vendido') {
+            soldCars.push(car)
+        }
+        else {
+            availableCars.push(car)
+        }
+    })
+    const sorted = [...availableCars, ...soldCars]
+    console.log(sorted)
+    if (sortBy === 'price-asc') {
+        console.log("filtering by price asc")
+        return sorted.sort(sortByPriceAsc)
+    }
+    if (sortBy === 'price-desc') {
+        console.log("filtering by price desc")
+        console.log(sorted)
+        const res = sorted.sort(sortByPriceDesc)
+        console.log(res)
+        return res
+    }
+    if (sortBy === 'year-asc') {
+        console.log("filtering by year asc")
+        return sorted.sort(sortByYearAsc)
+    }
+    if (sortBy === 'year-desc') {
+        console.log("filtering by year desc")
+        return sorted.sort(sortByYearDesc)
+    }
+    if (sortBy === 'engine-asc') {
+        console.log("filtering by engine asc")
+        return sorted.sort(sortByEngineAsc)
+    }
+    if (sortBy === 'engine-desc') {
+        console.log("filtering by engine desc")
+        return sorted.sort(sortByEngineDesc)
+    }
+
+    return sorted
+}
+
+let mockCars = [
+    {
+        id: "mercedes-amg-gt-63",
+        name: "Mercedes-AMG GT 63",
+        price: 169900,
+        originalPrice: 175000,
+        year: 2023,
+        power: "639 CV",
+        engine: "V8 Biturbo",
+        fuel: "Gasolina",
+        image: "/placeholder.svg?height=400&width=600&text=Mercedes-AMG+GT+63",
+        status: "en-venta",
+    },
+    {
+        id: "porsche-911-turbo-s",
+        name: "Porsche 911 Turbo S",
+        price: 229900,
+        year: 2022,
+        power: "650 CV",
+        engine: "Flat-6 Biturbo 4 cilindrt",
+        fuel: "Gasolina",
+        image: "/placeholder.svg?height=400&width=600&text=Porsche+911+Turbo+S",
+        status: "en-venta",
+    },
+    {
+        id: "audi-rs7-sportback",
+        name: "Audi RS7 Sportback",
+        price: 139900,
+        originalPrice: 149900,
+        year: 2023,
+        power: "600 CV",
+        engine: "V8 Biturbo",
+        fuel: "Gasolina",
+        image: "/placeholder.svg?height=400&width=600&text=Audi+RS7+Sportback",
+        status: "oferta-especial",
+    },
+    {
+        id: "bmw-m5-competition",
+        name: "BMW M5 Competition",
+        price: 145900,
+        year: 2022,
+        power: "625 CV",
+        engine: "V8 Biturbo",
+        fuel: "Gasolina",
+        image: "/placeholder.svg?height=400&width=600&text=BMW+M5+Competition",
+        status: "reservado",
+    },
+    {
+        id: "tesla-model-s-plaid",
+        name: "Tesla Model S Plaid",
+        price: 129900,
+        year: 2023,
+        power: "1020 CV",
+        engine: "Eléctrico",
+        fuel: "Eléctrico",
+        image: "/placeholder.svg?height=400&width=600&text=Tesla+Model+S+Plaid",
+        status: "recien-llegado",
+    },
+    {
+        id: "lamborghini-huracan-evo",
+        name: "Lamborghini Huracán EVO",
+        price: 259900,
+        year: 2021,
+        power: "640 CV",
+        engine: "V10",
+        fuel: "Gasolina",
+        image: "/placeholder.svg?height=400&width=600&text=Lamborghini+Huracán+EVO",
+        status: "en-reparacion",
+    },
+    {
+        id: "ferrari-f8-tributo",
+        name: "Ferrari F8 Tributo",
+        price: 289900,
+        year: 2022,
+        power: "720 CV",
+        engine: "V8 Biturbo",
+        fuel: "Gasolina",
+        image: "/placeholder.svg?height=400&width=600&text=Ferrari+F8+Tributo",
+        status: "vendido",
+    },
+    {
+        id: "mclaren-720s",
+        name: "McLaren 720S",
+        price: 269900,
+        year: 2021,
+        power: "720 CV",
+        engine: "V8 Biturbo",
+        fuel: "Gasolina",
+        image: "/placeholder.svg?height=400&width=600&text=McLaren+720S",
+        status: "vendido",
+    },
+    {
+        id: "bentley-continental-gt",
+        name: "Bentley Continental GT",
+        price: 219900,
+        year: 2022,
+        power: "550 CV",
+        engine: "W12",
+        fuel: "Gasolina",
+        image: "/placeholder.svg?height=400&width=600&text=Bentley+Continental+GT",
+        status: "en-venta",
+    },
+    {
+        id: "mercedes-eqs-580",
+        name: "Mercedes EQS 580",
+        price: 149900,
+        year: 2023,
+        power: "516 CV",
+        engine: "Eléctrico",
+        fuel: "Eléctrico",
+        image: "/placeholder.svg?height=400&width=600&text=Mercedes+EQS+580",
+        status: "recien-llegado",
+    },
+    {
+        id: "aston-martin-dbs",
+        name: "Aston Martin DBS",
+        price: 329900,
+        originalPrice: 349900,
+        year: 2022,
+        power: "725 CV",
+        engine: "V12",
+        fuel: "Gasolina",
+        image: "/placeholder.svg?height=400&width=600&text=Aston+Martin+DBS",
+        status: "oferta-especial",
+    },
+    {
+        id: "rolls-royce-ghost",
+        name: "Rolls-Royce Ghost",
+        price: 399900,
+        year: 2023,
+        power: "571 CV",
+        engine: "V12",
+        fuel: "Gasolina",
+        image: "/placeholder.svg?height=400&width=600&text=Rolls-Royce+Ghost",
+        status: "vendido",
+    },
+    // Añadir más coches para probar la paginación
+    {
+        id: "bugatti-chiron",
+        name: "Bugatti Chiron",
+        price: 2500000,
+        year: 2022,
+        power: "1500 CV",
+        engine: "W16 Quad-Turbo",
+        fuel: "Gasolina",
+        image: "/placeholder.svg?height=400&width=600&text=Bugatti+Chiron",
+        status: "vendido",
+    },
+    {
+        id: "koenigsegg-jesko",
+        name: "Koenigsegg Jesko",
+        price: 2800000,
+        year: 2023,
+        power: "1600 CV",
+        engine: "V8 Twin-Turbo",
+        fuel: "Gasolina",
+        image: "/placeholder.svg?height=400&width=600&text=Koenigsegg+Jesko",
+        status: "vendido",
+    },
+    {
+        id: "pagani-huayra",
+        name: "Pagani Huayra",
+        price: 2100000,
+        year: 2021,
+        power: "840 CV",
+        engine: "V12 Twin-Turbo",
+        fuel: "Gasolina",
+        image: "/placeholder.svg?height=400&width=600&text=Pagani+Huayra",
+        status: "vendido",
+    },
+    {
+        id: "rimac-nevera",
+        name: "Rimac Nevera",
+        price: 2000000,
+        year: 2023,
+        power: "1914 CV",
+        engine: "Eléctrico",
+        fuel: "Eléctrico",
+        image: "/placeholder.svg?height=400&width=600&text=Rimac+Nevera",
+        status: "vendido",
+    },
+]
+
 
 // Componente principal
 export default function CarsPage() {
+    const carsPerPage = 12
+    const searchParams = useSearchParams();
     const [isLoading, setIsLoading] = useState(true)
     const [cars, setCars] = useState([])
     const [filteredCars, setFilteredCars] = useState([])
+    const [isFiltersOpen, setIsFiltersOpen] = useState(false)
     const [displayedCars, setDisplayedCars] = useState([])
     const [visibleCount, setVisibleCount] = useState(12)
 
@@ -46,7 +330,56 @@ export default function CarsPage() {
     const [yearRange, setYearRange] = useState([2010, 2025])
     const [selectedFuels, setSelectedFuels] = useState([])
     const [selectedStatuses, setSelectedStatuses] = useState([])
+    const router = useRouter()
     const [sortBy, setSortBy] = useState("price-asc")
+    const brands = Array.from(new Set(mockCars.map((car) => car.name.split(" ")[0])))
+
+    const handleFilterChange = () => {
+        let filtered = filterCars(mockCars)
+        if (sortBy) {
+            filtered = sortCars(filtered, sortBy)
+        }
+
+        setFilteredCars(filtered)
+        setIsFiltersOpen(false)
+        setVisibleCount(12)
+    }
+
+    useEffect(() => {
+        handleFilterChange()
+    }, [sortBy])
+
+    function getAllSearchParams() {
+        const params = {};
+
+        searchParams.forEach((value, key) => {
+            params[key] = value;
+        });
+
+        return params;
+    };
+
+    function filterCars(carsData) {
+        let filters = getAllSearchParams()
+
+        const cars = sortCars(carsData).filter((car) => {
+            return (
+                (!filters.brand || car.name.toLowerCase().includes(filters.brand.toLowerCase()) || filters.brand == 'all') &&
+                (!filters.minKm || car.km >= Number.parseInt(filters.minKm)) &&
+                (!filters.maxKm || car.km <= Number.parseInt(filters.maxKm)) &&
+                (!filters.minYear || car.year >= Number.parseInt(filters.minYear)) &&
+                (!filters.maxYear || car.year <= Number.parseInt(filters.maxYear)) &&
+                (!filters.transmission || car.transmission.toLowerCase() === filters.transmission.toLowerCase()) &&
+                (!filters.fuelType || car.fuelType.toLowerCase() === filters.fuelType.toLowerCase()) &&
+                (!filters.minPrice || car.price >= Number.parseInt(filters.minPrice)) &&
+                (!filters.maxPrice || car.price <= Number.parseInt(filters.maxPrice)) &&
+                (!filters.seats || car.seats === Number.parseInt(filters.seats)) &&
+                (!filters.carType || car.carType === filters.carType) &&
+                (!filters.environmentLabel || car.environmentLabel === filters.environmentLabel)
+            )
+        })
+        return cars
+    }
 
     // Cargar datos de coches
     useEffect(() => {
@@ -54,197 +387,11 @@ export default function CarsPage() {
             try {
                 setIsLoading(true)
                 // Simular una petición al backend
-                await new Promise((resolve) => setTimeout(resolve, 2000))
-
-                // Datos de ejemplo
-                let mockCars = [
-                    {
-                        id: "mercedes-amg-gt-63",
-                        name: "Mercedes-AMG GT 63",
-                        price: 169900,
-                        originalPrice: 175000,
-                        year: 2023,
-                        power: "639 CV",
-                        engine: "V8 Biturbo",
-                        fuel: "Gasolina",
-                        image: "/placeholder.svg?height=400&width=600&text=Mercedes-AMG+GT+63",
-                        status: "en-venta",
-                    },
-                    {
-                        id: "porsche-911-turbo-s",
-                        name: "Porsche 911 Turbo S",
-                        price: 229900,
-                        year: 2022,
-                        power: "650 CV",
-                        engine: "Flat-6 Biturbo",
-                        fuel: "Gasolina",
-                        image: "/placeholder.svg?height=400&width=600&text=Porsche+911+Turbo+S",
-                        status: "en-venta",
-                    },
-                    {
-                        id: "audi-rs7-sportback",
-                        name: "Audi RS7 Sportback",
-                        price: 139900,
-                        originalPrice: 149900,
-                        year: 2023,
-                        power: "600 CV",
-                        engine: "V8 Biturbo",
-                        fuel: "Gasolina",
-                        image: "/placeholder.svg?height=400&width=600&text=Audi+RS7+Sportback",
-                        status: "oferta-especial",
-                    },
-                    {
-                        id: "bmw-m5-competition",
-                        name: "BMW M5 Competition",
-                        price: 145900,
-                        year: 2022,
-                        power: "625 CV",
-                        engine: "V8 Biturbo",
-                        fuel: "Gasolina",
-                        image: "/placeholder.svg?height=400&width=600&text=BMW+M5+Competition",
-                        status: "reservado",
-                    },
-                    {
-                        id: "tesla-model-s-plaid",
-                        name: "Tesla Model S Plaid",
-                        price: 129900,
-                        year: 2023,
-                        power: "1020 CV",
-                        engine: "Eléctrico",
-                        fuel: "Eléctrico",
-                        image: "/placeholder.svg?height=400&width=600&text=Tesla+Model+S+Plaid",
-                        status: "recien-llegado",
-                    },
-                    {
-                        id: "lamborghini-huracan-evo",
-                        name: "Lamborghini Huracán EVO",
-                        price: 259900,
-                        year: 2021,
-                        power: "640 CV",
-                        engine: "V10",
-                        fuel: "Gasolina",
-                        image: "/placeholder.svg?height=400&width=600&text=Lamborghini+Huracán+EVO",
-                        status: "en-reparacion",
-                    },
-                    {
-                        id: "ferrari-f8-tributo",
-                        name: "Ferrari F8 Tributo",
-                        price: 289900,
-                        year: 2022,
-                        power: "720 CV",
-                        engine: "V8 Biturbo",
-                        fuel: "Gasolina",
-                        image: "/placeholder.svg?height=400&width=600&text=Ferrari+F8+Tributo",
-                        status: "vendido",
-                    },
-                    {
-                        id: "mclaren-720s",
-                        name: "McLaren 720S",
-                        price: 269900,
-                        year: 2021,
-                        power: "720 CV",
-                        engine: "V8 Biturbo",
-                        fuel: "Gasolina",
-                        image: "/placeholder.svg?height=400&width=600&text=McLaren+720S",
-                        status: "vendido",
-                    },
-                    {
-                        id: "bentley-continental-gt",
-                        name: "Bentley Continental GT",
-                        price: 219900,
-                        year: 2022,
-                        power: "550 CV",
-                        engine: "W12",
-                        fuel: "Gasolina",
-                        image: "/placeholder.svg?height=400&width=600&text=Bentley+Continental+GT",
-                        status: "en-venta",
-                    },
-                    {
-                        id: "mercedes-eqs-580",
-                        name: "Mercedes EQS 580",
-                        price: 149900,
-                        year: 2023,
-                        power: "516 CV",
-                        engine: "Eléctrico",
-                        fuel: "Eléctrico",
-                        image: "/placeholder.svg?height=400&width=600&text=Mercedes+EQS+580",
-                        status: "recien-llegado",
-                    },
-                    {
-                        id: "aston-martin-dbs",
-                        name: "Aston Martin DBS",
-                        price: 329900,
-                        originalPrice: 349900,
-                        year: 2022,
-                        power: "725 CV",
-                        engine: "V12",
-                        fuel: "Gasolina",
-                        image: "/placeholder.svg?height=400&width=600&text=Aston+Martin+DBS",
-                        status: "oferta-especial",
-                    },
-                    {
-                        id: "rolls-royce-ghost",
-                        name: "Rolls-Royce Ghost",
-                        price: 399900,
-                        year: 2023,
-                        power: "571 CV",
-                        engine: "V12",
-                        fuel: "Gasolina",
-                        image: "/placeholder.svg?height=400&width=600&text=Rolls-Royce+Ghost",
-                        status: "en-venta",
-                    },
-                    // Añadir más coches para probar la paginación
-                    {
-                        id: "bugatti-chiron",
-                        name: "Bugatti Chiron",
-                        price: 2500000,
-                        year: 2022,
-                        power: "1500 CV",
-                        engine: "W16 Quad-Turbo",
-                        fuel: "Gasolina",
-                        image: "/placeholder.svg?height=400&width=600&text=Bugatti+Chiron",
-                        status: "en-venta",
-                    },
-                    {
-                        id: "koenigsegg-jesko",
-                        name: "Koenigsegg Jesko",
-                        price: 2800000,
-                        year: 2023,
-                        power: "1600 CV",
-                        engine: "V8 Twin-Turbo",
-                        fuel: "Gasolina",
-                        image: "/placeholder.svg?height=400&width=600&text=Koenigsegg+Jesko",
-                        status: "recien-llegado",
-                    },
-                    {
-                        id: "pagani-huayra",
-                        name: "Pagani Huayra",
-                        price: 2100000,
-                        year: 2021,
-                        power: "840 CV",
-                        engine: "V12 Twin-Turbo",
-                        fuel: "Gasolina",
-                        image: "/placeholder.svg?height=400&width=600&text=Pagani+Huayra",
-                        status: "en-venta",
-                    },
-                    {
-                        id: "rimac-nevera",
-                        name: "Rimac Nevera",
-                        price: 2000000,
-                        year: 2023,
-                        power: "1914 CV",
-                        engine: "Eléctrico",
-                        fuel: "Eléctrico",
-                        image: "/placeholder.svg?height=400&width=600&text=Rimac+Nevera",
-                        status: "recien-llegado",
-                    },
-                ]
-
-                mockCars = [...mockCars, ...mockCars, ...mockCars]
-
-                setCars(mockCars)
-                setFilteredCars(mockCars)
-                setDisplayedCars(mockCars.slice(0, visibleCount))
+                await new Promise((resolve) => setTimeout(resolve, 1000))
+                const sorted = sortCars(mockCars)
+                setCars(sorted)
+                setFilteredCars(sorted)
+                setDisplayedCars(sorted.slice(0, visibleCount))
             } catch (error) {
                 console.error("Error fetching cars:", error)
             } finally {
@@ -255,76 +402,12 @@ export default function CarsPage() {
         fetchCars()
     }, [])
 
-    // Aplicar filtros cuando cambien
-    useEffect(() => {
-        let result = [...cars]
-
-        // Filtro por término de búsqueda
-        if (searchTerm) {
-            result = result.filter(
-                (car) =>
-                    car.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    car.engine.toLowerCase().includes(searchTerm.toLowerCase()),
-            )
-        }
-
-        // Filtro por rango de precio
-        result = result.filter((car) => car.price >= priceRange[0] && car.price <= priceRange[1])
-
-        // Filtro por rango de año
-        result = result.filter((car) => car.year >= yearRange[0] && car.year <= yearRange[1])
-
-        // Filtro por combustible
-        if (selectedFuels.length > 0) {
-            result = result.filter((car) => selectedFuels.includes(car.fuel))
-        }
-
-        // Filtro por estado
-        if (selectedStatuses.length > 0) {
-            result = result.filter((car) => selectedStatuses.includes(car.status))
-        }
-
-        // Ordenar
-        switch (sortBy) {
-            case "price-asc":
-                result.sort((a, b) => a.price - b.price)
-                break
-            case "price-desc":
-                result.sort((a, b) => b.price - a.price)
-                break
-            case "year-asc":
-                result.sort((a, b) => a.year - b.year)
-                break
-            case "year-desc":
-                result.sort((a, b) => b.year - a.year)
-                break
-            case "power-asc":
-                result.sort((a, b) => {
-                    const powerA = Number.parseInt(a.power.replace(/\D/g, ""))
-                    const powerB = Number.parseInt(b.power.replace(/\D/g, ""))
-                    return powerA - powerB
-                })
-                break
-            case "power-desc":
-                result.sort((a, b) => {
-                    const powerA = Number.parseInt(a.power.replace(/\D/g, ""))
-                    const powerB = Number.parseInt(b.power.replace(/\D/g, ""))
-                    return powerB - powerA
-                })
-                break
-        }
-
-        setFilteredCars(result)
-        // Reiniciar la paginación al filtrar
-        setVisibleCount(12)
-        setDisplayedCars(result.slice(0, 12))
-    }, [cars, searchTerm, priceRange, yearRange, selectedFuels, selectedStatuses, sortBy])
-
     // Función para cargar más coches
     const loadMoreCars = () => {
         const newVisibleCount = visibleCount + 12
         setVisibleCount(newVisibleCount)
         setDisplayedCars(filteredCars.slice(0, newVisibleCount))
+        setVisibleCount(newVisibleCount)
     }
 
     // Función para renderizar el badge de estado
@@ -332,12 +415,7 @@ export default function CarsPage() {
         switch (status) {
             case "en-venta":
                 return null // No mostrar badge para coches en venta
-            case "reservado":
-                return (
-                    <Badge className="absolute top-3 right-3 z-10 bg-amber-500 text-white">
-                        <Clock className="h-3 w-3 mr-1" /> Reservado
-                    </Badge>
-                )
+
             case "en-reparacion":
                 return (
                     <Badge className="absolute top-3 right-3 z-10 bg-cyan-500 text-white">
@@ -356,14 +434,19 @@ export default function CarsPage() {
                         <Sparkles className="h-3 w-3 mr-1" /> Oferta especial
                     </Badge>
                 )
-            case "vendido":
-                return (
-                    <Badge className="absolute top-3 right-3 z-10 bg-premium-gray-dark text-white">
-                        <Ban className="h-3 w-3 mr-1" /> Vendido
-                    </Badge>
-                )
+            // case "vendido":
+            //     return (
+            //         <Badge className="absolute top-3 right-3 z-10 bg-premium-gray-dark text-white">
+            //             <Ban className="h-3 w-3 mr-1" /> Vendido
+            //         </Badge>
+            //     )
         }
+        return <></>
     }
+
+    useEffect(() => {
+        handleFilterChange()
+    }, [searchParams])
 
     // Función para manejar cambios en los filtros de combustible
     const handleFuelChange = (fuel) => {
@@ -377,361 +460,201 @@ export default function CarsPage() {
 
     // Función para resetear filtros
     const resetFilters = () => {
-        setSearchTerm("")
-        setPriceRange([0, 500000])
-        setYearRange([2010, 2025])
-        setSelectedFuels([])
-        setSelectedStatuses([])
-        setSortBy("price-asc")
+        router.push(`/cars`, { scroll: false });
     }
 
     // Componente de carga (Skeleton)
     if (isLoading) {
         return (
-            <main className="min-h-screen bg-premium-gray-dark text-white py-12">
-                <div className="container mx-auto px-4">
+            <main className="min-h-screen bg-gradient-to-b from-[#171717] to-[#0a0a0a] text-white py-12 relative overflow-hidden">
+                {/* Patrón de fibra de carbono */}
+                <div className="absolute inset-0 opacity-10"
+                    style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M0,0 L40,40 M0,40 L40,0' stroke='%23D4A636' stroke-width='1'/%3E%3C/svg%3E")`,
+                        backgroundSize: '20px 20px'
+                    }}>
+                </div>
+
+                {/* Efecto de luz central */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,166,54,0.15),transparent_70%)]"></div>
+
+                <div className="container mx-auto px-4 relative z-10">
                     <div className="mb-8">
-                        <Skeleton className="h-10 w-64 mb-2" />
-                        <Skeleton className="h-6 w-full max-w-2xl" />
+                        <Skeleton className="h-10 w-64 mb-2 bg-[#222]/60" />
+                        <Skeleton className="h-6 w-full max-w-2xl bg-[#222]/60" />
                     </div>
 
                     {/* Barra de acciones Skeleton */}
                     <div className="flex justify-between items-center mb-6">
-                        <Skeleton className="h-10 w-32" />
-                        <Skeleton className="h-10 w-48" />
+                        <Skeleton className="h-10 w-32 bg-[#222]/60" />
+                        <Skeleton className="h-10 w-48 bg-[#222]/60" />
                     </div>
 
                     {/* Grid de coches Skeleton */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {[...Array(12)].map((_, i) => (
-                            <Skeleton key={i} className="h-[400px] rounded-lg" />
+                            <Skeleton key={i} className="h-[400px] rounded-lg bg-[#222]/60 border border-[#D4A636]/10" />
                         ))}
                     </div>
                 </div>
             </main>
         )
     }
-
-    // Contenido del panel de filtros
-    const filterContent = (
-        <>
-            <div className="space-y-6">
-                {/* Búsqueda */}
-                <div>
-                    <Label htmlFor="search-filter" className="text-white mb-2 block">
-                        Buscar
-                    </Label>
-                    <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white/50" />
-                        <Input
-                            id="search-filter"
-                            placeholder="Nombre, motor..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="pl-10 bg-premium-gray-light border-premium-gray-medium text-white"
-                        />
-                    </div>
-                </div>
-
-                {/* Rango de precio */}
-                <div>
-                    <div className="flex justify-between items-center mb-2">
-                        <Label className="text-white">Precio</Label>
-                        <span className="text-white/70 text-sm">
-                            {priceRange[0].toLocaleString()} € - {priceRange[1].toLocaleString()} €
-                        </span>
-                    </div>
-                    <Slider
-                        defaultValue={[0, 500000]}
-                        min={0}
-                        max={500000}
-                        step={5000}
-                        value={priceRange}
-                        onValueChange={setPriceRange}
-                        className="my-4"
-                    />
-                </div>
-
-                {/* Rango de año */}
-                <div>
-                    <div className="flex justify-between items-center mb-2">
-                        <Label className="text-white">Año</Label>
-                        <span className="text-white/70 text-sm">
-                            {yearRange[0]} - {yearRange[1]}
-                        </span>
-                    </div>
-                    <Slider
-                        defaultValue={[2010, 2025]}
-                        min={2010}
-                        max={2025}
-                        step={1}
-                        value={yearRange}
-                        onValueChange={setYearRange}
-                        className="my-4"
-                    />
-                </div>
-
-                {/* Tipo de combustible */}
-                <div>
-                    <Label className="text-white mb-2 block">Combustible</Label>
-                    <div className="grid grid-cols-2 gap-2">
-                        {["Gasolina", "Diésel", "Híbrido", "Eléctrico"].map((fuel) => (
-                            <div key={fuel} className="flex items-center">
-                                <Checkbox
-                                    id={`fuel-${fuel}`}
-                                    checked={selectedFuels.includes(fuel)}
-                                    onCheckedChange={() => handleFuelChange(fuel)}
-                                    className="border-premium-gray-light data-[state=checked]:bg-premium-red data-[state=checked]:border-premium-red"
-                                />
-                                <label htmlFor={`fuel-${fuel}`} className="ml-2 text-white/70">
-                                    {fuel}
-                                </label>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Estado del vehículo */}
-                <div>
-                    <Label className="text-white mb-2 block">Estado</Label>
-                    <div className="grid grid-cols-2 gap-2">
-                        {[
-                            { value: "en-venta", label: "En venta" },
-                            { value: "reservado", label: "Reservado" },
-                            { value: "en-reparacion", label: "En reparación" },
-                            { value: "recien-llegado", label: "Recién llegado" },
-                            { value: "oferta-especial", label: "Oferta especial" },
-                        ].map((status) => (
-                            <div key={status.value} className="flex items-center">
-                                <Checkbox
-                                    id={`status-${status.value}`}
-                                    checked={selectedStatuses.includes(status.value)}
-                                    onCheckedChange={() => handleStatusChange(status.value)}
-                                    className="border-premium-gray-light data-[state=checked]:bg-premium-red data-[state=checked]:border-premium-red"
-                                />
-                                <label htmlFor={`status-${status.value}`} className="ml-2 text-white/70">
-                                    {status.label}
-                                </label>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Ordenación */}
-                <div>
-                    <Label htmlFor="sort-by-filter" className="text-white mb-2 block">
-                        Ordenar por
-                    </Label>
-                    <Select value={sortBy} onValueChange={setSortBy}>
-                        <SelectTrigger id="sort-by-filter" className="bg-premium-gray-light border-premium-gray-medium text-white">
-                            <SelectValue placeholder="Ordenar por" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-premium-gray-medium border-premium-gray-light text-white">
-                            <SelectItem value="price-asc">Precio: menor a mayor</SelectItem>
-                            <SelectItem value="price-desc">Precio: mayor a menor</SelectItem>
-                            <SelectItem value="year-asc">Año: antiguo a reciente</SelectItem>
-                            <SelectItem value="year-desc">Año: reciente a antiguo</SelectItem>
-                            <SelectItem value="power-asc">Potencia: menor a mayor</SelectItem>
-                            <SelectItem value="power-desc">Potencia: mayor a menor</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-            </div>
-
-            <Separator className="my-6 bg-premium-gray-light" />
-
-            <div className="flex justify-between">
-                <Button variant="outline" onClick={resetFilters} className="text-white/70 hover:text-white">
-                    <X className="h-4 w-4 mr-2" />
-                    Resetear filtros
-                </Button>
-
-                <Button className="bg-gradient-to-r from-premium-red to-orange-500 hover:from-premium-red/90 hover:to-orange-500/90 text-white">
-                    Aplicar filtros
-                </Button>
-            </div>
-        </>
-    )
+    const shownCars = filteredCars.slice(0, visibleCount)
 
     return (
-        <main className="min-h-screen bg-premium-gray-dark text-white py-12">
-            <div className="container mx-auto px-4">
-                <div className="mb-8">
-                    <h1 className="text-3xl md:text-4xl font-bold mb-2 text-white">Nuestra Colección de Vehículos</h1>
-                    <p className="text-white/70 max-w-2xl">
-                        Explore nuestra exclusiva selección de vehículos premium. Desde deportivos de alto rendimiento hasta sedanes
-                        de lujo, tenemos el coche perfecto para usted.
-                    </p>
-                </div>
+        <main className="min-h-screen relative overflow-hidden py-16">
+            {/* Fondo base con color gris oscuro */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#171717] to-[#0a0a0a]"></div>
 
-                {/* Barra de acciones */}
-                <div className="py-4 bg-premium-gray-dark border-b border-premium-gray-light mb-6">
-                    <div className="flex justify-between items-center flex-wrap gap-3">
-                        {/* Botón de filtros (siempre visible) */}
-                        <Sheet>
-                            <SheetTrigger asChild>
-                                <Button variant="outline" className="border-premium-gray-light text-black flex items-center">
-                                    <Filter className="h-4 w-4 mr-2" />
-                                    Filtros
-                                    <Badge className="ml-2 bg-premium-red text-white">
-                                        {selectedFuels.length > 0 ||
-                                            selectedStatuses.length > 0 ||
-                                            searchTerm ||
-                                            priceRange[0] > 0 ||
-                                            priceRange[1] < 500000 ||
-                                            yearRange[0] > 2010 ||
-                                            yearRange[1] < 2025
-                                            ? "Activos"
-                                            : ""}
-                                    </Badge>
-                                </Button>
-                            </SheetTrigger>
-                            <SheetContent
-                                side="left"
-                                className="w-[350px] sm:w-[450px] bg-premium-gray-dark border-premium-gray-light"
-                            >
-                                <SheetHeader>
-                                    <SheetTitle className="text">Filtros</SheetTitle>
-                                </SheetHeader>
-                                {filterContent}
-                            </SheetContent>
-                        </Sheet>
+            {/* Patrón de fibra de carbono */}
+            <div className="absolute inset-0 opacity-10"
+                style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M0,0 L40,40 M0,40 L40,0' stroke='%23D4A636' stroke-width='1'/%3E%3C/svg%3E")`,
+                    backgroundSize: '20px 20px'
+                }}>
+            </div>
 
-                        {/* Ordenación rápida */}
-                        <div className="flex items-center">
-                            <Select value={sortBy} onValueChange={setSortBy}>
-                                <SelectTrigger className="w-[220px] bg-premium-gray-light border-premium-gray-medium text-white">
-                                    <ArrowUpDown className="h-4 w-4 mr-2" />
-                                    <SelectValue placeholder="Ordenar por" />
-                                </SelectTrigger>
-                                <SelectContent className="bg-premium-gray-medium border-premium-gray-light text-white">
-                                    <SelectItem value="price-asc">Precio: menor a mayor</SelectItem>
-                                    <SelectItem value="price-desc">Precio: mayor a menor</SelectItem>
-                                    <SelectItem value="year-asc">Año: antiguo a reciente</SelectItem>
-                                    <SelectItem value="year-desc">Año: reciente a antiguo</SelectItem>
-                                    <SelectItem value="power-asc">Potencia: menor a mayor</SelectItem>
-                                    <SelectItem value="power-desc">Potencia: mayor a menor</SelectItem>
-                                </SelectContent>
-                            </Select>
+            {/* Efecto de luz central */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,166,54,0.15),transparent_70%)]"></div>
+
+            {/* Puntos de brillo */}
+            <div className="absolute inset-0 opacity-20"
+                style={{
+                    backgroundImage: `radial-gradient(circle at 20% 30%, #D4A636 0%, transparent 0.5%),
+                                      radial-gradient(circle at 80% 40%, #D4A636 0%, transparent 0.5%),
+                                      radial-gradient(circle at 40% 70%, #D4A636 0%, transparent 0.5%),
+                                      radial-gradient(circle at 70% 20%, #D4A636 0%, transparent 0.5%),
+                                      radial-gradient(circle at 30% 50%, #D4A636 0%, transparent 0.5%),
+                                      radial-gradient(circle at 60% 80%, #D4A636 0%, transparent 0.5%)`,
+                    backgroundSize: '100% 100%'
+                }}>
+            </div>
+
+            <div className="container mx-auto px-4 sm:px-0 relative z-10">
+                <section className="relative mb-12">
+                    <div className="text-center max-w-4xl mx-auto">
+                        <div className="inline-block px-4 py-1.5 rounded-full bg-[#212121] border border-[#D4A636]/40 text-[#D4A636] text-sm font-medium tracking-wider uppercase mb-4">
+                            Vehículos Premium
+                        </div>
+                        <h1 className="text-4xl md:text-5xl font-bold mb-5 text-[#D4A636]">
+                            Nuestra Colección Exclusiva
+                        </h1>
+                        <div className="w-20 h-1 bg-[#D4A636] mx-auto mb-6"></div>
+                        <p className="text-lg text-white/80 mb-12 max-w-2xl mx-auto">
+                            Explore nuestra exclusiva selección de vehículos premium. Cada uno representa la perfecta combinación de rendimiento, lujo y elegancia.
+                        </p>
+
+                        {/* Estadísticas/Highlights */}
+                        {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                            <div className="bg-[#1a1a1a] p-6 rounded-xl border border-[#D4A636]/20 hover:border-[#D4A636]/50 transition-all duration-300 shadow-lg">
+                                <p className="text-[#D4A636] text-2xl font-bold">{filteredCars.length}</p>
+                                <p className="text-white/80 text-sm">Vehículos disponibles</p>
+                            </div>
+                            <div className="bg-[#1a1a1a] p-6 rounded-xl border border-[#D4A636]/20 hover:border-[#D4A636]/50 transition-all duration-300 shadow-lg">
+                                <p className="text-[#D4A636] text-2xl font-bold">24/7</p>
+                                <p className="text-white/80 text-sm">Atención personalizada</p>
+                            </div>
+                            <div className="bg-[#1a1a1a] p-6 rounded-xl border border-[#D4A636]/20 hover:border-[#D4A636]/50 transition-all duration-300 shadow-lg">
+                                <p className="text-[#D4A636] text-2xl font-bold">100%</p>
+                                <p className="text-white/80 text-sm">Garantía de calidad</p>
+                            </div>
+                            <div className="bg-[#1a1a1a] p-6 rounded-xl border border-[#D4A636]/20 hover:border-[#D4A636]/50 transition-all duration-300 shadow-lg">
+                                <p className="text-[#D4A636] text-2xl font-bold">+500</p>
+                                <p className="text-white/80 text-sm">Clientes satisfechos</p>
+                            </div>
+                        </div> */}
+
+                        {/* División decorativa */}
+                        <div className="flex justify-center items-center mb-12">
+                            <div className="w-[35%] xl:w-[25%] px-4">
+                                <div className="h-[1px] rounded-full shadow-[0_0_20px_rgba(212,166,54,0.5)] relative">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#D4A636] to-transparent rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Nueva barra de filtros y ordenación */}
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 max-w-3xl mx-auto">
+                            <div className="flex-1 w-full sm:w-auto">
+                                <Sheet
+                                    open={isFiltersOpen}
+                                    onOpenChange={setIsFiltersOpen}
+                                    className="sheet-close-button-golden"
+                                >
+                                    <SheetTrigger asChild>
+                                        <Button
+                                            variant="outline"
+                                            className="py-6 w-full sm:w-[250px] bg-[#1a1a1a] text-white border border-[#D4A636]/30 hover:bg-[#222] transition-colors hover:text-[#D4A636] hover:border-[#D4A636]/70"
+                                        >
+                                            <Filter className="h-4 w-4 mr-2 text-[#D4A636]" />
+                                            Filtrar colección
+                                        </Button>
+                                    </SheetTrigger>
+                                    <SheetContent
+                                        side="left"
+                                        className="overflow-y-auto border-r border-[#D4A636]/20 p-0 xl:min-w-[40vw] w-fit bg-gradient-to-b from-[#171717] to-[#0D0D0D] sheet-content-inputs-enhanced"
+                                    >
+                                        <div className="p-6 border-b border-[#D4A636]/20 bg-[#1a1a1a]/70">
+                                            <h2 className="text-2xl font-bold text-[#D4A636] flex items-center">
+                                                <Filter className="h-5 w-5 mr-2" />
+                                                Filtrar Vehículos
+                                            </h2>
+                                            <p className="text-white/70 text-sm mt-1">
+                                                Ajuste los parámetros para encontrar el vehículo de sus sueños
+                                            </p>
+                                        </div>
+                                        <div className="relative z-10">
+                                            <CarFilters brands={brands} />
+                                        </div>
+                                    </SheetContent>
+                                </Sheet>
+                            </div>
+                            <div className="flex-1 w-full sm:w-auto">
+                                <Select value={sortBy} onValueChange={setSortBy}>
+                                    <SelectTrigger className="py-6 flex items-center justify-center gap-2 w-full sm:w-[250px] bg-[#1a1a1a] text-white border border-[#D4A636]/30 hover:bg-[#222] transition-colors hover:text-[#D4A636] hover:border-[#D4A636]/70">
+                                        <ArrowUpDown className="h-4 w-4 mr-2 text-[#D4A636]" />
+                                        <SelectValue placeholder="Ordenar vehículos" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-[#1a1a1a] border border-[#D4A636]/30 text-white">
+                                        <SelectItem value="price-asc">Precio: menor a mayor</SelectItem>
+                                        <SelectItem value="price-desc">Precio: mayor a menor</SelectItem>
+                                        {/* <SelectItem value="year-desc">Más recientes primero</SelectItem>
+                                        <SelectItem value="year-asc">Más antiguos primero</SelectItem> */}
+                                    </SelectContent>
+                                </Select>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
 
                 {/* Resultados */}
-                {filteredCars.length === 0 ? (
-                    <div className="bg-premium-gray-medium border border-premium-gray-light rounded-lg p-8 text-center">
-                        <AlertCircle className="h-12 w-12 text-premium-red mx-auto mb-4" />
-                        <h3 className="text-xl font-bold mb-2">No se encontraron vehículos</h3>
+                {shownCars.length === 0 ? (
+                    <div className="bg-[#1a1a1a]/80 border border-[#D4A636]/20 rounded-xl p-8 text-center shadow-lg backdrop-blur-sm">
+                        <AlertCircle className="h-12 w-12 text-[#D4A636] mx-auto mb-4" />
+                        <h3 className="text-xl font-bold mb-2 text-white">No se encontraron vehículos</h3>
                         <p className="text-white/70 mb-4">No hay vehículos que coincidan con los filtros seleccionados.</p>
-                        <Button onClick={resetFilters} className="bg-premium-red hover:bg-premium-red/90 text-white">
+                        <Button
+                            onClick={resetFilters}
+                            className="bg-[#D4A636] hover:bg-[#D4A636]/80 text-white border-none"
+                        >
                             Resetear filtros
                         </Button>
                     </div>
                 ) : (
                     <>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {displayedCars.map((car) => (
-                                <Card
-                                    key={car.id}
-                                    className={`pt-6 bg-gradient-to-br from-premium-gray-medium/80 to-premium-gray-dark/80 border-premium-gray-light/50 relative group transition-all duration-300 flex flex-col shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_30px_rgba(229,62,62,0.3)] backdrop-blur-sm ${car.status === "vendido" ? "opacity-70 hover:opacity-70 cursor-default" : ""
-                                        }`}
-                                >
-                                    {/* Badge de estado */}
-                                    {renderStatusBadge(car.status)}
-
-                                    {/* Imagen */}
-                                    <div className="relative h-56 w-full">
-                                        <Image
-                                            src={'/test-coche1.jpg'}
-                                            alt={car.name}
-                                            fill
-                                            className={`object-contain ${car.status !== "vendido" && ""}`}
-                                        />
-
-                                        {/* Overlay para coches vendidos */}
-                                        {car.status === "vendido" && (
-                                            <div className="absolute inset-0 bg-premium-black/50 flex items-center justify-center">
-                                                <Badge className="bg-premium-gray-dark text-white text-lg py-2 px-4">
-                                                    <Ban className="h-5 w-5 mr-2" /> Vendido
-                                                </Badge>
-                                            </div>
-                                        )}
-
-                                        {/* Precio con descuento */}
-                                        {car.originalPrice && (
-                                            <div className="absolute bottom-3 left-3 bg-gradient-to-r from-premium-red to-orange-500 text-white px-2 py-1 rounded text-sm font-bold">
-                                                -{Math.round(((car.originalPrice - car.price) / car.originalPrice) * 100)}%
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <CardContent className="p-6 flex-1 flex flex-col">
-                                        <h3 className="text-xl font-semibold mb-2 text-white">{car.name}</h3>
-
-                                        {/* Precio */}
-                                        <div className="mb-4">
-                                            {car.originalPrice && (
-                                                <p className="text-sm text-white/70 line-through">{car.originalPrice.toLocaleString()} €</p>
-                                            )}
-                                            <p className="text-2xl font-bold text-premium-red">{car.price.toLocaleString()} €</p>
-                                        </div>
-
-                                        {/* Especificaciones */}
-                                        <div className="grid grid-cols-1 gap-3 mb-6">
-                                            <div className="flex items-center">
-                                                <div className="w-8 flex-shrink-0">
-                                                    <Gauge className="h-4 w-4 text-cyan-500" />
-                                                </div>
-                                                <span className="text-white/70 text-sm">{car.power}</span>
-                                            </div>
-                                            <div className="flex items-center">
-                                                <div className="w-8 flex-shrink-0">
-                                                    <Calendar className="h-4 w-4 text-amber-500" />
-                                                </div>
-                                                <span className="text-white/70 text-sm">{car.year}</span>
-                                            </div>
-                                            <div className="flex items-center">
-                                                <div className="w-8 flex-shrink-0">
-                                                    <Car className="h-4 w-4 text-emerald-500" />
-                                                </div>
-                                                <span className="text-white/70 text-sm">{car.engine}</span>
-                                            </div>
-                                            <div className="flex items-center">
-                                                <div className="w-8 flex-shrink-0">
-                                                    <Fuel className="h-4 w-4 text-premium-red" />
-                                                </div>
-                                                <span className="text-white/70 text-sm">{car.fuel}</span>
-                                            </div>
-                                        </div>
-
-                                        {/* Botón de detalles - siempre pegado al fondo - ahora sin fondo */}
-                                        <div className="mt-auto">
-                                            {car.status !== "vendido" ? (
-                                                <Link href={`/car-detail?id=${car.id}`} className="block w-full">
-                                                    <Button className="w-full bg-gradient-to-r from-premium-red to-orange-500 hover:from-premium-red/90 hover:to-orange-500/90 text-white">
-                                                        Ver detalles
-                                                    </Button>
-                                                </Link>
-                                            ) : (
-                                                <Button
-                                                    disabled
-                                                    className="w-full bg-premium-gray-light/50 text-white/50 cursor-not-allowed backdrop-blur-sm"
-                                                >
-                                                    No disponible
-                                                </Button>
-                                            )}
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 xl:px-12">
+                            {shownCars.map((car) => (
+                                <CarCard car={car} key={car.id} />
                             ))}
                         </div>
 
                         {/* Botón "Mostrar más" */}
-                        {filteredCars.length > visibleCount && (
-                            <div className="mt-10 text-center">
+                        {visibleCount < filteredCars.length && (
+                            <div className="mt-12 text-center">
                                 <Button
                                     onClick={loadMoreCars}
-                                    className="bg-gradient-to-r from-premium-red to-orange-500 hover:from-premium-red/90 hover:to-orange-500/90 text-white"
+                                    className="bg-[#1a1a1a] text-[#D4A636] border border-[#D4A636]/30 hover:bg-[#222] hover:border-[#D4A636]/70 transition-all duration-300 py-6 px-8"
                                 >
                                     <ChevronDown className="h-4 w-4 mr-2" />
                                     Mostrar más vehículos
@@ -744,4 +667,9 @@ export default function CarsPage() {
         </main>
     )
 }
+
+
+
+
+
 

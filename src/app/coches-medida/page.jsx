@@ -8,20 +8,22 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
 import { Globe, Plane, FileText, DollarSign, Award } from "lucide-react"
 import Image from "next/image"
+import CraneRentalForm from '../../components/FormComponent'
 
 export default function CustomImportPage() {
   return (
-    <main className="flex min-h-screen flex-col bg-gradient-to-b from-premium-gray-dark to-[#1a1a2e] text-white">
+    <main className="flex min-h-screen flex-col bg-gradient-to-b from-premium-gray-dark/90 to-[#1a1a2e] text-white">
+      {/* <CraneRentalForm /> */}
       {/* Hero Section */}
       <section className="relative h-[40vh] w-full">
-        <Image
+        {/* <Image
           src="/placeholder.svg?height=500&width=1600"
           alt="Custom car import"
           fill
           className="object-cover brightness-75"
           priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-premium-black via-premium-black/70 to-transparent" />
+        /> */}
+        <div className="absolute inset-0 bg-gradient-to-t from-yellow-700 via-premium-yellow-900/50 to-transparent" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
           <Badge className="mb-4 bg-gradient-to-r from-amber-500 to-yellow-400 text-white border-none">
             Servicio Exclusivo
@@ -45,9 +47,9 @@ export default function CustomImportPage() {
         ></div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid md:grid-cols-2 gap-12 items-start">
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
             <div>
-              <h2 className="text-3xl font-bold mb-6 text-white flex items-center">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-white flex items-center">
                 <span className="bg-gradient-to-r from-amber-500 to-yellow-400 text-white p-2 rounded-full mr-3">
                   <Globe className="h-6 w-6" />
                 </span>
@@ -58,7 +60,7 @@ export default function CustomImportPage() {
                 personalizada trae vehículos de todo el mundo directamente a usted. Nos encargamos de toda la logística,
                 el papeleo y los requisitos de cumplimiento para que el proceso sea fluido.
               </p>
-              <div className="space-y-6">
+              {/* <div className="space-y-6">
                 <div className="relative h-[250px] w-full rounded-lg overflow-hidden shadow-[0_0_25px_rgba(245,158,11,0.3)]">
                   <Image
                     src="/placeholder.svg?height=250&width=500"
@@ -88,6 +90,16 @@ export default function CustomImportPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-premium-black to-transparent"></div>
                     <div className="absolute bottom-2 left-2 text-white text-sm font-bold">Clásicos Americanos</div>
                   </div>
+                </div>
+              </div> */}
+
+              <div className="space-y-6 flex flex-col">
+                <div className="relative h-auto max-w-xl w-full self-center rounded-lg overflow-hidden shadow-[0_0_25px_rgba(56,189,248,0.3)]">
+                  <img
+                    src="/bmw.jpg"
+                    alt="Tow truck service"
+                    className="object-contain"
+                  />
                 </div>
               </div>
 
@@ -167,7 +179,8 @@ export default function CustomImportPage() {
                   <Globe className="h-5 w-5 text-amber-500 mr-2" />
                   Solicitud de Importación
                 </h3>
-                <form className="space-y-6">
+                <CraneRentalForm />
+                {/* <form className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="name" className="text-white">
                       Nombre Completo
@@ -329,7 +342,7 @@ export default function CustomImportPage() {
                   >
                     Enviar Solicitud
                   </Button>
-                </form>
+                </form> */}
               </CardContent>
             </Card>
           </div>

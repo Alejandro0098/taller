@@ -10,17 +10,17 @@ import Image from "next/image"
 
 export default function TowTruckPage() {
   return (
-    <main className="flex min-h-screen flex-col bg-gradient-to-b from-premium-gray-dark to-[#1a1a2e] text-white">
+    <main className="flex min-h-screen flex-col bg-gradient-to-b from-[#1a1a2e] to-[#1a1a2e]/90 text-white">
       {/* Hero Section */}
       <section className="relative h-[40vh] w-full">
-        <Image
+        {/* <Image
           src="/placeholder.svg?height=500&width=1600"
           alt="Tow truck service"
           fill
           className="object-cover brightness-75"
           priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-premium-black via-premium-black/70 to-transparent" />
+        /> */}
+        <div className="absolute inset-0 bg-gradient-to-t from-blue-900 via-premium-blue-900/70 to-transparent/20" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
           <Badge className="mb-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white border-none">
             Servicio Premium
@@ -42,9 +42,9 @@ export default function TowTruckPage() {
         ></div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid md:grid-cols-2 gap-12 items-start">
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
             <div>
-              <h2 className="text-3xl font-bold mb-6 text-white flex items-center">
+              <h2 className="text-xl sm:text-3xl font-bold mb-6 text-white flex items-center">
                 <span className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white p-2 rounded-full mr-3">
                   <Truck className="h-6 w-6" />
                 </span>
@@ -55,36 +55,16 @@ export default function TowTruckPage() {
                 un coche recién adquirido o mover un vehículo para mantenimiento, nuestra flota de grúas modernas está a
                 su disposición.
               </p>
-              <div className="space-y-6">
-                <div className="relative h-[250px] w-full rounded-lg overflow-hidden shadow-[0_0_25px_rgba(56,189,248,0.3)]">
-                  <Image
-                    src="/placeholder.svg?height=250&width=500"
+              <div className="space-y-6 flex flex-col">
+                <div className="relative h-auto max-w-xl w-full self-center rounded-lg overflow-hidden shadow-[0_0_25px_rgba(56,189,248,0.3)]">
+                  <img
+                    src="/grua.jpg"
                     alt="Tow truck service"
-                    fill
-                    className="object-cover"
+                    className="object-contain"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="relative h-[120px] w-full rounded-lg overflow-hidden">
-                    <Image
-                      src="/placeholder.svg?height=120&width=200"
-                      alt="Tow truck detail"
-                      fill
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-premium-black to-transparent"></div>
-                    <div className="absolute bottom-2 left-2 text-white text-sm font-bold">Grúa Plataforma</div>
-                  </div>
-                  <div className="relative h-[120px] w-full rounded-lg overflow-hidden">
-                    <Image
-                      src="/placeholder.svg?height=120&width=200"
-                      alt="Tow truck detail"
-                      fill
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-premium-black to-transparent"></div>
-                    <div className="absolute bottom-2 left-2 text-white text-sm font-bold">Grúa Asistencia</div>
-                  </div>
+
                 </div>
               </div>
 

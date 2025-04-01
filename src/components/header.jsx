@@ -1,181 +1,207 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Menu, X, Car, Zap, Award, User, Phone, ChevronDown } from "lucide-react"
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { Button } from './ui/button'
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from './ui/sheet'
+import {
+  Menu,
+  Phone,
+  Mail,
+  Clock,
+  Home,
+  Car,
+  Settings,
+  MapPin,
+  Instagram,
+  Youtube,
+  Music
+} from 'lucide-react'
+import { usePathname } from 'next/navigation'
 
-export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+export default function Navbar() {
+  const pathname = usePathname()
+  const [activeTab, setActiveTab] = useState(pathname || '')
+  const router = useRouter()
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
+  useEffect(() => {
+    if (pathname.startsWith('/cars/')) {
+      setActiveTab('/cars')
+    } else {
+      setActiveTab(pathname || '')
+    }
+  }, [pathname, router])
 
+  "#1A1A1A"
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-premium-gray-light bg-premium-black/95 backdrop-blur supports-[backdrop-filter]:bg-premium-black/60">
-      <div className="container flex h-16 items-center justify-between">
-        <Link href="/" className="font-bold text-xl text-white flex items-center">
-          <span className="bg-gradient-to-r from-premium-red to-orange-500 text-white p-1 rounded mr-2">
-            <Car className="h-5 w-5" />
-          </span>
-          AutoPremium
-        </Link>
-
-        <nav className="hidden sm:flex items-center space-x-6">
-          <Link
-            href="/"
-            className="text-sm font-medium text-white/80 transition-colors hover:text-premium-red flex items-center"
-          >
-            Inicio
-          </Link>
-          <Link
-            href="/cars"
-            className="text-sm font-medium text-white/80 transition-colors hover:text-cyan-500 flex items-center"
-          >
-            <Car className="h-4 w-4 mr-1 text-cyan-500" />
-            Vehículos
-          </Link>
-          <Link
-            href="/car-detail"
-            className="text-sm font-medium text-white/80 transition-colors hover:text-amber-500 flex items-center"
-          >
-            <Award className="h-4 w-4 mr-1 text-amber-500" />
-            Detalle de Vehículo
-          </Link>
-          <div className="relative group">
-            <button className="text-sm font-medium text-white/80 transition-colors hover:text-emerald-500 flex items-center">
-              <Zap className="h-4 w-4 mr-1 text-emerald-500" />
-              Servicios
-              <ChevronDown className="h-3 w-3 ml-1" />
-            </button>
-            <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-premium-gray-medium border border-premium-gray-light hidden group-hover:block">
-              <div className="py-1">
-                <Link
-                  href="/services/tow-truck"
-                  className="block px-4 py-2 text-sm text-white/80 hover:bg-premium-gray-dark hover:text-cyan-500"
-                >
-                  Servicio de Grúas
-                </Link>
-                <Link
-                  href="/services/custom-import"
-                  className="block px-4 py-2 text-sm text-white/80 hover:bg-premium-gray-dark hover:text-amber-500"
-                >
-                  Importación a Medida
-                </Link>
-              </div>
+    <header className="sticky top-0 z-50 bg-premium-gray-dark border-b border-[#333] shadow-lg">
+      {/* Barra superior de contacto (solo desktop) */}
+      <div className="hidden lg:block bg-[#111] py-2 px-6 border-b border-[#333]">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center space-x-6">
+            <div className="flex items-center text-sm text-gray-300">
+              <Phone className="w-4 h-4 mr-2 text-gold-500" />
+              +34 123 456 789
+            </div>
+            <div className="flex items-center text-sm text-gray-300">
+              <Mail className="w-4 h-4 mr-2 text-gold-500" />
+              vehimesmotors@outlook.com
             </div>
           </div>
-          <Link
-            href="/about"
-            className="text-sm font-medium text-white/80 transition-colors hover:text-orange-500 flex items-center"
-          >
-            <User className="h-4 w-4 mr-1 text-orange-500" />
-            Sobre Nosotros
-          </Link>
-          <Link
-            href="/contact"
-            className="text-sm font-medium text-white/80 transition-colors hover:text-purple-500 flex items-center"
-          >
-            <Phone className="h-4 w-4 mr-1 text-purple-500" />
-            Contacto
-          </Link>
-        </nav>
 
-        <Button
-          variant="outline"
-          className="hidden sm:inline-flex border-transparent bg-gradient-to-r from-premium-red to-orange-500 text-white hover:opacity-90"
-        >
-          <Link href="/contact">Solicitar Información</Link>
-        </Button>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center text-sm text-gray-300">
+              <Clock className="w-4 h-4 mr-2 text-gold-500" />
+              L-V: 9:00-19:00 | S: 10:00-14:00
+            </div>
 
-        <Button variant="ghost" size="icon" className="sm:hidden text-white" onClick={toggleMenu}>
-          <Menu className="h-6 w-6" />
-          <span className="sr-only">Abrir menú</span>
-        </Button>
+            {/* Redes sociales */}
+            <div className="flex items-center space-x-3 ml-4">
+              <a href="#" className="text-gray-300 hover:text-gold-500 transition-colors">
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a href="#" className="text-gray-300 hover:text-gold-500 transition-colors">
+                <Youtube className="w-5 h-5" />
+              </a>
+              <a href="#" className="text-gray-300 hover:text-gold-500 transition-colors">
+                <Music className="w-5 h-5" />
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Mobile menu */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-premium-black">
-          <div className="container flex h-16 items-center justify-between">
-            <Link href="/" className="font-bold text-xl text-white flex items-center">
-              <span className="bg-gradient-to-r from-premium-red to-orange-500 text-white p-1 rounded mr-2">
-                <Car className="h-5 w-5" />
-              </span>
-              AutoPremium
-            </Link>
-            <Button variant="ghost" size="icon" className="text-white" onClick={toggleMenu}>
-              <X className="h-6 w-6" />
-              <span className="sr-only">Cerrar menú</span>
-            </Button>
-          </div>
-          <nav className="container grid gap-6 py-6">
+      {/* Navbar principal */}
+      <div className="container mx-auto px-6 py-2">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center" onClick={() => setActiveTab('/')}>
+            <div className="relative h-12 w-auto mb-2">
+              <img
+                src="/logo.png"
+                alt="Mi Taller Logo"
+                width={150}
+                height={48}
+                className="object-contain max-h-14"
+              />
+            </div>
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center space-x-8 h-full">
             <Link
               href="/"
-              className="text-lg font-medium text-white/80 transition-colors hover:text-premium-red flex items-center"
-              onClick={toggleMenu}
+              className={`h-fit text-white flex items-center rounded-xs px-2 py-3 h-fit ${activeTab === '/' ? 'border-b-[2px] border-gold-500' : 'hover:text-white/90 border-transparent hover:border-gold-500'} transition-all`}
+              onClick={() => setActiveTab('/')}
             >
               Inicio
             </Link>
             <Link
               href="/cars"
-              className="text-lg font-medium text-white/80 transition-colors hover:text-cyan-500 flex items-center"
-              onClick={toggleMenu}
+              className={`h-fit text-white flex items-center rounded-xs px-2 py-3 h-fit ${activeTab === '/cars' ? 'border-b-[2px] border-gold-500' : 'hover:text-white/90 border-transparent hover:border-gold-500'} transition-all`}
+              onClick={() => setActiveTab('/cars')}
             >
-              <Car className="h-5 w-5 mr-2 text-cyan-500" />
-              Vehículos
+              Vehículos disponibles
             </Link>
             <Link
-              href="/car-detail"
-              className="text-lg font-medium text-white/80 transition-colors hover:text-amber-500 flex items-center"
-              onClick={toggleMenu}
+              href="/coches-medida"
+              className={`h-fit text-white flex items-center rounded-xs px-2 py-3 h-fit ${activeTab === '/coches-medida' ? 'border-b-[2px] border-gold-500' : 'hover:text-white/90 border-transparent hover:border-gold-500'} transition-all`}
+              onClick={() => setActiveTab('/coches-medida')}
             >
-              <Award className="h-5 w-5 mr-2 text-amber-500" />
-              Detalle de Vehículo
+              Coches a medida
             </Link>
             <Link
-              href="/services/tow-truck"
-              className="text-lg font-medium text-white/80 transition-colors hover:text-emerald-500 flex items-center"
-              onClick={toggleMenu}
+              href="/recogida"
+              className={`h-fit text-white flex items-center rounded-xs px-2 py-3 h-fit ${activeTab === '/recogida' ? 'border-b-[2px] border-gold-500' : 'hover:text-white/90 border-transparent hover:border-gray-500'} transition-all`}
+              onClick={() => setActiveTab('/recogida')}
             >
-              <Zap className="h-5 w-5 mr-2 text-emerald-500" />
-              Servicio de Grúas
+              Servicio de recogida
             </Link>
-            <Link
-              href="/services/custom-import"
-              className="text-lg font-medium text-white/80 transition-colors hover:text-orange-500 flex items-center"
-              onClick={toggleMenu}
-            >
-              <Zap className="h-5 w-5 mr-2 text-orange-500" />
-              Importación a Medida
-            </Link>
-            <Link
-              href="/about"
-              className="text-lg font-medium text-white/80 transition-colors hover:text-purple-500 flex items-center"
-              onClick={toggleMenu}
-            >
-              <User className="h-5 w-5 mr-2 text-purple-500" />
-              Sobre Nosotros
-            </Link>
-            <Link
-              href="/contact"
-              className="text-lg font-medium text-white/80 transition-colors hover:text-pink-500 flex items-center"
-              onClick={toggleMenu}
-            >
-              <Phone className="h-5 w-5 mr-2 text-pink-500" />
-              Contacto
-            </Link>
-            <Button
-              className="w-full bg-gradient-to-r from-premium-red to-orange-500 hover:opacity-90 text-white"
-              onClick={toggleMenu}
-            >
-              <Link href="/contact">Solicitar Información</Link>
-            </Button>
           </nav>
+
+          {/* Mobile Nav Trigger */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <button
+                variant="ghost"
+                className="lg:hidden text-gray-300 hover:bg-[#333] hover:text-gold-500 p-3"
+              >
+                <Menu className="h-full" /> {/* Botón más grande */}
+              </button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[85vw] bg-[#1A1A1A] border-l border-[#333] overflow-y-auto [&>button:first-child]:text-white">
+              <div className="flex flex-col h-full pt-8">
+                <nav className="flex flex-col">
+                  <Link
+                    href="/"
+                  >
+                    <SheetClose className="py-4 px-4 text-gray-300 hover:bg-[#222] hover:text-gold-500 border-b border-[#333] transition-all flex items-center w-full">
+                      <Home className="w-5 h-5 mr-3 text-gold-500" />
+                      Inicio
+                    </SheetClose>
+                  </Link>
+                  <Link
+                    href="/cars"
+                  >
+                    <SheetClose className="py-4 px-4 text-gray-300 hover:bg-[#222] hover:text-gold-500 border-b border-[#333] transition-all flex items-center w-full">
+                      <Car className="w-5 h-5 mr-3 text-gold-500" />
+                      Vehículos disponibles
+                    </SheetClose>
+                  </Link>
+                  <Link
+                    href="/recogida"
+                  >
+                    <SheetClose className="py-4 px-4 text-gray-300 hover:bg-[#222] hover:text-gold-500 border-b border-[#333] transition-all flex items-center w-full">
+                      <Settings className="w-5 h-5 mr-3 text-gold-500" />
+                      Coches a medida
+                    </SheetClose>
+                  </Link>
+                  <Link
+                    href="/coches-medida"
+                  >
+                    <SheetClose className="py-4 px-4 text-gray-300 hover:bg-[#222] hover:text-gold-500 border-b border-[#333] transition-all flex items-center w-full">
+                      <MapPin className="w-5 h-5 mr-3 text-gold-500" />
+                      Servicio de recogida
+                    </SheetClose>
+                  </Link>
+                </nav>
+
+                {/* Contacto y redes en mobile */}
+                <div className="mt-auto pb-8 pt-6 border-t border-[#333]">
+                  <div className="space-y-4 mb-6">
+                    <div className="flex items-center text-gray-300">
+                      <Phone className="w-4 h-4 mr-3 " />
+                      +34 123 456 789
+                    </div>
+                    <div className="flex items-center text-gray-300">
+                      <Mail className="w-4 h-4 mr-3 " />
+                      contacto@luxurycars.com
+                    </div>
+                    <div className="flex items-center text-gray-300">
+                      <Clock className="w-4 h-4 mr-3 " />
+                      L - V: 9:00-19:00 | S: 10:00-14:00
+                    </div>
+                  </div>
+
+                  {/* Redes sociales en mobile */}
+                  <div className="flex space-x-8 justify-center mt-12">
+                    <a href="#" className="text-gray-300 hover:text-gold-500 transition-colors">
+                      <Instagram className="w-6 h-6" />
+                    </a>
+                    <a href="#" className="text-gray-300 hover:text-gold-500 transition-colors">
+                      <Youtube className="w-6 h-6" />
+                    </a>
+                    <a href="#" className="text-gray-300 hover:text-gold-500 transition-colors">
+                      <Music className="w-6 h-6" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
-      )}
+      </div>
     </header>
   )
 }
-
