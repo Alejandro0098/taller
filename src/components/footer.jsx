@@ -1,87 +1,90 @@
-import { Phone, Clock, Mail, Instagram, Youtube, Music } from "lucide-react"
+import { Phone, Clock, Mail, Instagram, Youtube, Music, MapPin } from "lucide-react"
 import Link from "next/link"
-
 
 export default function Footer() {
   return (
-    <footer className="bg-[#1A1A1A] border-t border-[#333] shadow-lg">
+    <footer className="relative bg-[#0A0A0A]">
+      {/* Franja decorativa superior */}
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-gold-500 to-transparent opacity-50"></div>
+
       <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="flex flex-col md:flex-row md:flex-wrap lg:justify-evenly gap-16">
+        {/* Grid principal */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Contacto */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-100 border-b border-gold-500 pb-2 inline-block self-center">
-              Contacto
-            </h3>
+          <div>
+            <h3 className="text-sm uppercase tracking-wider text-gold-500 mb-4">Contacto</h3>
             <div className="space-y-3">
-              <p className="flex items-center text-gray-300">
-                <Phone className="w-4 h-4 mr-3 text-gold-500" />
+              <a href="tel:+34123456789" className="flex items-center gap-2 text-gray-300 hover:text-gold-500 transition-colors group">
+                <Phone className="h-4 w-4 text-gray-400 group-hover:text-gold-500" />
                 +34 123 456 789
-              </p>
-              <p className="flex items-center text-gray-300">
-                <Mail className="w-4 h-4 mr-3 text-gold-500" />
+              </a>
+              <a href="mailto:vehimesmotors@outlook.com" className="flex items-center gap-2 text-gray-300 hover:text-gold-500 transition-colors group">
+                <Mail className="h-4 w-4 text-gray-400 group-hover:text-gold-500" />
                 vehimesmotors@outlook.com
-              </p>
-              <p className="flex items-center text-gray-300">
-                <Clock className="w-4 h-4 mr-3 text-gold-500" />
-                L-V: 9:00-19:00 | S: 10:00-14:00
-              </p>
+              </a>
+              <div className="flex items-start gap-2 text-gray-300">
+                <MapPin className="h-4 w-4 text-gray-400 mt-1" />
+                <span>
+                  Calle Premium, 123<br />
+                  28001 Madrid, España
+                </span>
+              </div>
             </div>
           </div>
+
           {/* Redes sociales */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-100 border-b border-gold-500 pb-2 inline-block mb-2">
-              Síguenos
-            </h3>
-            <div className="flex space-x-4">
-              <a href="#" className="bg-[#333] text-white/80 p-3 rounded-full hover:bg-gold-500 hover:text-[#111] transition-colors">
-                <Instagram className="w-5 h-5" />
+          <div>
+            <h3 className="text-sm uppercase tracking-wider text-gold-500 mb-4">Síguenos</h3>
+            <div className="flex gap-3">
+              <a href="#" className="p-2 rounded-lg text-gray-400 hover:text-gold-500 transition-colors">
+                <Instagram className="h-5 w-5" />
               </a>
-              <a href="#" className="bg-[#333] text-white/80 p-3 rounded-full hover:bg-gold-500 hover:text-[#111] transition-colors">
-                <Youtube className="w-5 h-5" />
+              <a href="#" className="p-2 rounded-lg text-gray-400 hover:text-gold-500 transition-colors">
+                <Youtube className="h-5 w-5" />
               </a>
-              <a href="#" className="bg-[#333] text-white/80 p-3 rounded-full hover:bg-gold-500 hover:text-[#111] transition-colors">
-                <Music className="w-5 h-5" />
+              <a href="#" className="p-2 rounded-lg text-gray-400 hover:text-gold-500 transition-colors">
+                <Music className="h-5 w-5" />
               </a>
             </div>
           </div>
 
-
-          {/* Visítanos */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-100 border-b border-gold-500 pb-2 inline-block">
-              Visítanos
-            </h3>
+          {/* Horario */}
+          <div>
+            <h3 className="text-sm uppercase tracking-wider text-gold-500 mb-4">Horario</h3>
             <div className="space-y-3 text-gray-300">
-              <p>Calle Premium, 123</p>
-              <p>28001 Madrid</p>
-              <p>España</p>
+              <div className="flex items-center gap-2">
+                <span>Lunes - Viernes</span>
+                <span className="text-gray-400 ml-auto">9:00 - 19:00</span>
+              </div>
+              <div className="flex items-center">
+                <span>Sábado</span>
+                <span className="text-gray-400 ml-auto">10:00 - 14:00</span>
+              </div>
+              <div className="flex items-center">
+                <span >Domingo</span>
+                <span className="text-gray-400 ml-auto">Cerrado</span>
+              </div>
             </div>
           </div>
-
-          {/* Legal */}
-          {/* <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-100 border-b border-gold-500 pb-2 inline-block">
-              Legal
-            </h3>
-            <div className="space-y-3 text-gray-300">
-              <Link href="/politica-privacidad" className="block hover:text-gold-500 transition-colors">
-                Política de privacidad
-              </Link>
-              <Link href="/terminos-condiciones" className="block hover:text-gold-500 transition-colors">
-                Términos y condiciones
-              </Link>
-              <Link href="/aviso-legal" className="block hover:text-gold-500 transition-colors">
-                Aviso legal
-              </Link>
-            </div>
-          </div> */}
-
-
         </div>
 
-        {/* Derechos */}
-        <div className="border-t border-[#333] mt-12 pt-6 text-center text-sm text-gray-400">
-          <p>© {new Date().getFullYear()} Vehimes Motors. Todos los derechos reservados.</p>
+        {/* Separador */}
+        <div className="h-px bg-[#222] my-8"></div>
+
+        {/* Footer inferior */}
+        <div className="flex flex-col md:flex-row items-center justify-between text-xs text-gray-400">
+          <p>© {new Date().getFullYear()} Vehimes Motors</p>
+          <div className="flex gap-6 mt-4 md:mt-0">
+            <Link href="/privacy" className="hover:text-gold-500 transition-colors">
+              Política de Privacidad
+            </Link>
+            <Link href="/legal" className="hover:text-gold-500 transition-colors">
+              Aviso Legal
+            </Link>
+            <Link href="/cookies" className="hover:text-gold-500 transition-colors">
+              Cookies
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
