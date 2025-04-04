@@ -6,13 +6,13 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useForm } from "react-hook-form"
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, AlertOctagon } from "lucide-react"
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogDescription, 
-  DialogFooter 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter
 } from "@/components/ui/dialog"
 
 export default function ContactPage() {
@@ -20,11 +20,11 @@ export default function ContactPage() {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [formData, setFormData] = useState(null)
   const [acceptTerms, setAcceptTerms] = useState(false)
-  
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors }, 
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
     reset
   } = useForm({
     defaultValues: {
@@ -43,8 +43,8 @@ export default function ContactPage() {
       setFormStatus('error-terms')
       return;
     }
-    
-    setFormData({...data, acceptTerms})
+
+    setFormData({ ...data, acceptTerms })
     setShowConfirmDialog(true)
   }
 
@@ -53,7 +53,7 @@ export default function ContactPage() {
     setShowConfirmDialog(false)
     setFormStatus('submitting')
     setAcceptTerms(false) // Desmarcamos la casilla al enviar
-    
+
     try {
       // Aquí iría la llamada real a tu API
       // Simulamos una llamada al backend
@@ -67,7 +67,7 @@ export default function ContactPage() {
           }
         }, 1500)
       })
-      
+
       setFormStatus('success')
       reset()
     } catch (error) {
@@ -81,7 +81,7 @@ export default function ContactPage() {
     <main className="relative min-h-screen">
       {/* Fondo más claro */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#111111] to-[#1A1A1A]"></div>
-      
+
       {/* Patrón sutil */}
       <div className="absolute inset-0 opacity-5"
         style={{
@@ -89,10 +89,10 @@ export default function ContactPage() {
           backgroundSize: '20px 20px'
         }}>
       </div>
-      
+
       {/* Efecto de luz sutil */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(196,151,53,0.05),transparent_70%)]"></div>
-      
+
       <div className="container mx-auto min-h-screen text-white px-4 lg:px-8 relative z-10">
         <section className="py-20">
           {/* Título */}
@@ -109,12 +109,88 @@ export default function ContactPage() {
             </p>
           </div>
 
+
           {/* Contenido principal */}
           <div className="max-w-5xl mx-auto mb-20 space-y-12">
+            {/* Información de contacto con diseño premium */}
+            <div className="bg-gradient-to-br from-[#111111] to-[#0A0A0A] rounded-xl border border-[#333]/40 p-8 shadow-lg relative overflow-hidden">
+              {/* Efecto de luz sutil */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(196,151,53,0.15),transparent_70%)]"></div>
+
+              <h2 className="text-3xl font-bold mb-12 text-white relative">
+                <span className="text-[#C49735]">Información</span> de contacto
+                <div className="h-1 w-20 bg-gradient-to-r from-[#C49735] to-[#E3BD77] rounded-full mt-4"></div>
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div className="transform hover:scale-105 transition-transform duration-300">
+                  <div className="flex items-start group">
+                    <div className="w-12 h-12 rounded-xl bg-[#1A1A1A] border border-[#C49735]/30 flex items-center justify-center flex-shrink-0 group-hover:border-[#C49735] transition-colors">
+                      <MapPin className="h-6 w-6 text-[#C49735]" />
+                    </div>
+                    <div className="ml-6">
+                      <h3 className="text-xl text-white font-medium mb-2">Dirección</h3>
+                      <p className="text-white/70 leading-relaxed group-hover:text-white transition-colors">
+                        Calle Principal 123<br />
+                        28001 Madrid, España
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="transform hover:scale-105 transition-transform duration-300">
+                  <div className="flex items-start group">
+                    <div className="w-12 h-12 rounded-xl bg-[#1A1A1A] border border-[#C49735]/30 flex items-center justify-center flex-shrink-0 group-hover:border-[#C49735] transition-colors">
+                      <Phone className="h-6 w-6 text-[#C49735]" />
+                    </div>
+                    <div className="ml-6">
+                      <h3 className="text-xl text-white font-medium mb-2">Teléfono</h3>
+                      <p className="text-white/70 leading-relaxed">
+                        <a href="tel:+34123456789" className="hover:text-[#C49735] transition-colors">
+                          +34 123 456 789
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="transform hover:scale-105 transition-transform duration-300">
+                  <div className="flex items-start group">
+                    <div className="w-12 h-12 rounded-xl bg-[#1A1A1A] border border-[#C49735]/30 flex items-center justify-center flex-shrink-0 group-hover:border-[#C49735] transition-colors">
+                      <Mail className="h-6 w-6 text-[#C49735]" />
+                    </div>
+                    <div className="ml-6">
+                      <h3 className="text-xl text-white font-medium mb-2">Email</h3>
+                      <p className="text-white/70 leading-relaxed">
+                        <a href="mailto:info@ejemplo.com" className="hover:text-[#C49735] transition-colors">
+                          info@ejemplo.com
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="transform hover:scale-105 transition-transform duration-300">
+                  <div className="flex items-start group">
+                    <div className="w-12 h-12 rounded-xl bg-[#1A1A1A] border border-[#C49735]/30 flex items-center justify-center flex-shrink-0 group-hover:border-[#C49735] transition-colors">
+                      <Clock className="h-6 w-6 text-[#C49735]" />
+                    </div>
+                    <div className="ml-6">
+                      <h3 className="text-xl text-white font-medium mb-2">Horario</h3>
+                      <div className="text-white/70 leading-relaxed space-y-1 group-hover:text-white transition-colors">
+                        <p>Lunes - Viernes: 9:00 - 20:00</p>
+                        <p>Sábado: 10:00 - 14:00</p>
+                        <p>Domingo: Cerrado</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             {/* Formulario */}
             <div className="bg-[#111111] rounded-xl border border-[#333]/40 p-8 shadow-lg">
               <h2 className="text-2xl font-bold mb-8 text-[#C49735]">Envíanos un mensaje</h2>
-              
+
               <form onSubmit={handleSubmit(onValidSubmit)} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -125,7 +201,7 @@ export default function ContactPage() {
                       id="name"
                       type="text"
                       placeholder="Tu nombre"
-                      {...register("name", { 
+                      {...register("name", {
                         required: "El nombre es obligatorio",
                         minLength: {
                           value: 2,
@@ -138,7 +214,7 @@ export default function ContactPage() {
                       <p className="mt-1 text-red-500 text-xs">{errors.name.message}</p>
                     )}
                   </div>
-                  
+
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-white/70 mb-2">
                       Email*
@@ -147,8 +223,8 @@ export default function ContactPage() {
                       id="email"
                       type="email"
                       placeholder="Tu email"
-                      {...register("email", { 
-                        required: "El email es obligatorio", 
+                      {...register("email", {
+                        required: "El email es obligatorio",
                         pattern: {
                           value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                           message: "Email no válido"
@@ -160,7 +236,7 @@ export default function ContactPage() {
                       <p className="mt-1 text-red-500 text-xs">{errors.email.message}</p>
                     )}
                   </div>
-                  
+
                   <div>
                     <label htmlFor="phone" className="block text-sm font-medium text-white/70 mb-2">
                       Teléfono
@@ -173,7 +249,7 @@ export default function ContactPage() {
                       className="bg-[#1A1A1A] border border-[#333]/40 text-white placeholder:text-white/40 focus:border-[#C49735]"
                     />
                   </div>
-                  
+
                   <div>
                     <label htmlFor="subject" className="block text-sm font-medium text-white/70 mb-2">
                       Asunto*
@@ -182,7 +258,7 @@ export default function ContactPage() {
                       id="subject"
                       type="text"
                       placeholder="Asunto del mensaje"
-                      {...register("subject", { 
+                      {...register("subject", {
                         required: "El asunto es obligatorio",
                         minLength: {
                           value: 3,
@@ -196,7 +272,7 @@ export default function ContactPage() {
                     )}
                   </div>
                 </div>
-                
+
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-white/70 mb-2">
                     Mensaje*
@@ -205,7 +281,7 @@ export default function ContactPage() {
                     id="message"
                     placeholder="Escribe tu mensaje aquí..."
                     rows={6}
-                    {...register("message", { 
+                    {...register("message", {
                       required: "El mensaje es obligatorio",
                       minLength: {
                         value: 10,
@@ -218,11 +294,11 @@ export default function ContactPage() {
                     <p className="mt-1 text-red-500 text-xs">{errors.message.message}</p>
                   )}
                 </div>
-                
+
                 <div className="flex items-start space-x-2">
-                  <input 
-                    type="checkbox" 
-                    id="acceptTerms" 
+                  <input
+                    type="checkbox"
+                    id="acceptTerms"
                     checked={acceptTerms}
                     onChange={(e) => {
                       setAcceptTerms(e.target.checked)
@@ -241,7 +317,7 @@ export default function ContactPage() {
                     )}
                   </div>
                 </div>
-                
+
                 <div className="flex justify-center">
                   {formStatus === 'success' ? (
                     <div className="bg-green-600 text-white py-2 px-3 rounded-md flex items-center space-x-2 text-sm">
@@ -302,92 +378,16 @@ export default function ContactPage() {
                 </div>
               </form>
             </div>
-            
-            {/* Información de contacto con diseño premium */}
-            <div className="bg-gradient-to-br from-[#111111] to-[#0A0A0A] rounded-xl border border-[#333]/40 p-8 shadow-lg relative overflow-hidden">
-              {/* Efecto de luz sutil */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(196,151,53,0.15),transparent_70%)]"></div>
-              
-              <h2 className="text-3xl font-bold mb-12 text-white relative">
-                <span className="text-[#C49735]">Información</span> de contacto
-                <div className="h-1 w-20 bg-gradient-to-r from-[#C49735] to-[#E3BD77] rounded-full mt-4"></div>
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div className="transform hover:scale-105 transition-transform duration-300">
-                  <div className="flex items-start group">
-                    <div className="w-12 h-12 rounded-xl bg-[#1A1A1A] border border-[#C49735]/30 flex items-center justify-center flex-shrink-0 group-hover:border-[#C49735] transition-colors">
-                      <MapPin className="h-6 w-6 text-[#C49735]" />
-                    </div>
-                    <div className="ml-6">
-                      <h3 className="text-xl text-white font-medium mb-2">Dirección</h3>
-                      <p className="text-white/70 leading-relaxed group-hover:text-white transition-colors">
-                        Calle Principal 123<br />
-                        28001 Madrid, España
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="transform hover:scale-105 transition-transform duration-300">
-                  <div className="flex items-start group">
-                    <div className="w-12 h-12 rounded-xl bg-[#1A1A1A] border border-[#C49735]/30 flex items-center justify-center flex-shrink-0 group-hover:border-[#C49735] transition-colors">
-                      <Phone className="h-6 w-6 text-[#C49735]" />
-                    </div>
-                    <div className="ml-6">
-                      <h3 className="text-xl text-white font-medium mb-2">Teléfono</h3>
-                      <p className="text-white/70 leading-relaxed">
-                        <a href="tel:+34123456789" className="hover:text-[#C49735] transition-colors">
-                          +34 123 456 789
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="transform hover:scale-105 transition-transform duration-300">
-                  <div className="flex items-start group">
-                    <div className="w-12 h-12 rounded-xl bg-[#1A1A1A] border border-[#C49735]/30 flex items-center justify-center flex-shrink-0 group-hover:border-[#C49735] transition-colors">
-                      <Mail className="h-6 w-6 text-[#C49735]" />
-                    </div>
-                    <div className="ml-6">
-                      <h3 className="text-xl text-white font-medium mb-2">Email</h3>
-                      <p className="text-white/70 leading-relaxed">
-                        <a href="mailto:info@ejemplo.com" className="hover:text-[#C49735] transition-colors">
-                          info@ejemplo.com
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="transform hover:scale-105 transition-transform duration-300">
-                  <div className="flex items-start group">
-                    <div className="w-12 h-12 rounded-xl bg-[#1A1A1A] border border-[#C49735]/30 flex items-center justify-center flex-shrink-0 group-hover:border-[#C49735] transition-colors">
-                      <Clock className="h-6 w-6 text-[#C49735]" />
-                    </div>
-                    <div className="ml-6">
-                      <h3 className="text-xl text-white font-medium mb-2">Horario</h3>
-                      <div className="text-white/70 leading-relaxed space-y-1 group-hover:text-white transition-colors">
-                        <p>Lunes - Viernes: 9:00 - 20:00</p>
-                        <p>Sábado: 10:00 - 14:00</p>
-                        <p>Domingo: Cerrado</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
-          
+
           {/* Mapa */}
           <div className="max-w-5xl mx-auto mb-10 rounded-xl overflow-hidden border border-[#333]/40 shadow-lg">
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12140.403310389592!2d-3.683319399999999!3d40.4167754!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd422997800a3c81%3A0xc436dec1618c2269!2sMadrid%2C%20Espa%C3%B1a!5e0!3m2!1ses!2sco!4v1669558096315!5m2!1ses!2sco" 
-              width="100%" 
-              height="450" 
-              allowFullScreen 
-              loading="lazy" 
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12140.403310389592!2d-3.683319399999999!3d40.4167754!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd422997800a3c81%3A0xc436dec1618c2269!2sMadrid%2C%20Espa%C3%B1a!5e0!3m2!1ses!2sco!4v1669558096315!5m2!1ses!2sco"
+              width="100%"
+              height="450"
+              allowFullScreen
+              loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="w-full h-[450px] border-0"
             ></iframe>
@@ -414,16 +414,16 @@ export default function ContactPage() {
             </ul>
           </div>
           <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:justify-end mt-4">
-            <Button 
-              type="button" 
-              variant="outline" 
+            <Button
+              type="button"
+              variant="outline"
               onClick={() => setShowConfirmDialog(false)}
               className="border-[#333] text-white hover:bg-[#1A1A1A] hover:text-white"
             >
               Cancelar
             </Button>
-            <Button 
-              type="button" 
+            <Button
+              type="button"
               onClick={submitForm}
               className="bg-[#C49735] hover:bg-[#D4A636] text-black font-medium"
             >

@@ -137,7 +137,7 @@ export default function CarDetailPage() {
       <main className="min-h-screen relative overflow-hidden">
         {/* Fondo base con color gris oscuro */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#171717] to-[#0a0a0a]"></div>
-        
+
         {/* Patrón de fibra de carbono */}
         <div className="absolute inset-0 opacity-10"
           style={{
@@ -145,10 +145,10 @@ export default function CarDetailPage() {
             backgroundSize: '20px 20px'
           }}>
         </div>
-        
+
         {/* Efecto de luz central */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,166,54,0.15),transparent_70%)]"></div>
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <section className="py-12">
             <div className="container mx-auto">
@@ -246,7 +246,7 @@ export default function CarDetailPage() {
       <main className="min-h-screen relative overflow-hidden flex items-center justify-center">
         {/* Fondo base con color gris oscuro */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#171717] to-[#0a0a0a]"></div>
-        
+
         {/* Patrón de fibra de carbono */}
         <div className="absolute inset-0 opacity-10"
           style={{
@@ -254,10 +254,10 @@ export default function CarDetailPage() {
             backgroundSize: '20px 20px'
           }}>
         </div>
-        
+
         {/* Efecto de luz central */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,166,54,0.15),transparent_70%)]"></div>
-        
+
         <div className="text-center relative z-10">
           <h1 className="text-3xl font-bold mb-4 text-white">No se pudo cargar la información del vehículo</h1>
           <p className="text-xl mb-8 text-white/80">Por favor, inténtelo de nuevo más tarde.</p>
@@ -276,7 +276,7 @@ export default function CarDetailPage() {
     <main className="relative min-h-screen overflow-hidden">
       {/* Fondo base con color gris oscuro */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#171717] to-[#0a0a0a]"></div>
-      
+
       {/* Patrón de fibra de carbono */}
       <div className="absolute inset-0 opacity-10"
         style={{
@@ -284,10 +284,10 @@ export default function CarDetailPage() {
           backgroundSize: '20px 20px'
         }}>
       </div>
-      
+
       {/* Efecto de luz central */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,167,54,0.07),transparent_70%)]"></div>
-      
+
       {/* Puntos de brillo */}
       <div className="absolute inset-0 opacity-20"
         style={{
@@ -318,7 +318,7 @@ export default function CarDetailPage() {
               <div className="mb-8">
                 <Carousel images={carData.images} />
               </div>
-              
+
               {/* Información del vehículo */}
               <div
                 className="mb-8 bg-premium-gray-dark/80 rounded-xl border border-[#D4A636]/20 p-6 shadow-lg flex flex-wrap backdrop-blur-sm"
@@ -616,12 +616,16 @@ export default function CarDetailPage() {
                     63 o para programar una prueba de conducción.
                   </p>
                   <div className="flex flex-col sm:flex-row justify-center gap-4">
-                    <Button className="bg-gradient-to-r from-premium-red to-orange-500 hover:from-premium-red/90 hover:to-orange-500/90 text-white">
-                      Contactar ahora
-                    </Button>
-                    <Button variant="outline" className="border-white text-black hover:bg-white/95">
-                      Ver más vehículos
-                    </Button>
+                    <Link href={'/contact'}>
+                      <Button className="bg-gradient-to-r from-premium-red to-orange-500 hover:from-premium-red/90 hover:to-orange-500/90 text-white">
+                        Contactar ahora
+                      </Button>
+                    </Link>
+                    <Link href={'/cars'}>
+                      <Button variant="outline" className="border-white text-black hover:bg-white/95">
+                        Ver más vehículos
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </section>

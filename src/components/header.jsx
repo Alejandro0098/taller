@@ -247,18 +247,15 @@ export default function Header() {
                             <span className="font-medium">Servicios</span>
                             <ChevronDown className="h-3.5 w-3.5 transition-transform duration-200" />
                           </button>
-                          <div className="hidden mt-1 ml-2 space-y-1">
-                            {servicios.map((service) => (
-                              <Link
-                                key={service.title}
-                                href={service.href}
-                                className={`block p-1.5 text-xs transition-colors ${pathname === service.href ? "text-[#DBAF68]" : "text-white/80 hover:text-[#B38728]"
-                                  }`}
-                              >
-                                <SheetClose>
-                                  {service.title}
-                                </SheetClose>
-                              </Link>
+                          <div className="hidden mt-1 ml-2 space-y-1 py-1">
+                            {servicios.map((service, index) => (
+                              <SheetClose
+                                key={index}
+                                onClick={() => router.push(service.href)}
+                                className={`text-left w-full block p-1.5 text-xs transition-colors ${pathname === service.href ? "text-[#DBAF68]" : "text-white/80 hover:text-[#B38728]"
+                                  }`}>
+                                {service.title}
+                              </SheetClose>
                             ))}
                           </div>
                         </div>

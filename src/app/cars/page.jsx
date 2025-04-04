@@ -491,7 +491,7 @@ export default function CarsPage() {
                     </div>
 
                     {/* Grid de coches Skeleton */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:px-4">
                         {[...Array(12)].map((_, i) => (
                             <Skeleton key={i} className="h-[400px] rounded-lg bg-[#222]/60 border border-[#D4A636]/10" />
                         ))}
@@ -643,7 +643,7 @@ export default function CarsPage() {
                     </div>
                 ) : (
                     <>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 xl:px-12">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:px-4 xl:px-12">
                             {shownCars.map((car) => (
                                 <CarCard car={car} key={car.id} />
                             ))}

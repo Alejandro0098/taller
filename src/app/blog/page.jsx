@@ -29,20 +29,20 @@ export default function BlogPage() {
           const availableTags = ["Premium", "Eventos", "Noticias", "Novedades", "Clásicos", "Deportivos", "Técnica", "Mercado"];
           const numTags = Math.floor(Math.random() * 3) + 1;
           const postTags = [];
-          
+
           for (let j = 0; j < numTags; j++) {
             const randomTag = availableTags[Math.floor(Math.random() * availableTags.length)];
             if (!postTags.includes(randomTag)) {
               postTags.push(randomTag);
             }
           }
-          
+
           return {
             id: `post-${i + 1}`,
             slug: `ejemplo-entrada-blog-${i + 1}`,
             title: `Entrada de blog de ejemplo ${i + 1}`,
             excerpt: "Una breve descripción de la entrada del blog que muestra un adelanto del contenido completo...",
-            coverImage: "/placeholder.jpg",
+            coverImage: "/mercedes_1.jpg",
             date: new Date(Date.now() - i * 86400000).toISOString(),
             readTime: Math.floor(Math.random() * 20) + 5,
             category: ["Noticias", "Eventos", "Lanzamientos"][Math.floor(Math.random() * 3)],
@@ -52,11 +52,11 @@ export default function BlogPage() {
         });
 
         setPosts(mockPosts)
-        
+
         // Extraer todos los tags únicos
         const uniqueTags = [...new Set(mockPosts.flatMap(post => post.tags))];
         setAllTags(uniqueTags.sort());
-        
+
         setHasMore(mockPosts.length > visiblePosts)
       } catch (error) {
         console.error("Error al cargar las entradas del blog:", error)
@@ -70,9 +70,9 @@ export default function BlogPage() {
 
   // Manejar selección de tags
   const toggleTag = (tag) => {
-    setSelectedTags(prev => 
-      prev.includes(tag) 
-        ? prev.filter(t => t !== tag) 
+    setSelectedTags(prev =>
+      prev.includes(tag)
+        ? prev.filter(t => t !== tag)
         : [...prev, tag]
     );
   }
@@ -99,7 +99,7 @@ export default function BlogPage() {
       <main className="relative min-h-screen flex justify-center">
         {/* Fondo más claro - igual que en loading.jsx */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#111111] to-[#1A1A1A]"></div>
-        
+
         {/* Patrón sutil */}
         <div className="absolute inset-0 opacity-5"
           style={{
@@ -107,12 +107,12 @@ export default function BlogPage() {
             backgroundSize: '20px 20px'
           }}>
         </div>
-        
+
         {/* Efecto de luz sutil */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(196,151,53,0.05),transparent_70%)]"></div>
 
         <div className="relative w-full max-w-7xl mx-auto px-6 md:px-8 py-20">
-        <div className="text-center mb-20 relative">
+          <div className="text-center mb-20 relative">
             <div className="absolute inset-0 -mt-10 bg-[radial-gradient(ellipse_at_center,rgba(196,151,53,0.15),transparent_70%)]"></div>
             <div className="relative inline-block">
               <span className="absolute -top-10 left-1/2 transform -translate-x-1/2 text-[120px] opacity-5 font-bold text-[#C49735]">BLOG</span>
@@ -166,7 +166,7 @@ export default function BlogPage() {
     <main className="relative min-h-screen flex justify-center">
       {/* Fondo más claro - igual que en loading.jsx */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#111111] to-[#1A1A1A]"></div>
-      
+
       {/* Patrón sutil */}
       <div className="absolute inset-0 opacity-5"
         style={{
@@ -174,7 +174,7 @@ export default function BlogPage() {
           backgroundSize: '20px 20px'
         }}>
       </div>
-      
+
       {/* Efecto de luz sutil */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(196,151,53,0.05),transparent_70%)]"></div>
 
@@ -206,16 +206,15 @@ export default function BlogPage() {
                 <button
                   key={tag}
                   onClick={() => toggleTag(tag)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                    selectedTags.includes(tag)
-                      ? "bg-[#C49735] text-black border border-[#C49735]"
-                      : "bg-[#1A1A1A] text-white hover:bg-[#1A1A1A]/80 border border-[#333]/40 hover:border-[#C49735]/40"
-                  }`}
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${selectedTags.includes(tag)
+                    ? "bg-[#C49735] text-black border border-[#C49735]"
+                    : "bg-[#1A1A1A] text-white hover:bg-[#1A1A1A]/80 border border-[#333]/40 hover:border-[#C49735]/40"
+                    }`}
                 >
                   {tag}
                 </button>
               ))}
-              
+
               {selectedTags.length > 0 && (
                 <button
                   onClick={() => setSelectedTags([])}
@@ -231,8 +230,8 @@ export default function BlogPage() {
           {filteredPosts.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-xl text-white/80">No se encontraron artículos con los filtros seleccionados.</p>
-              <Button 
-                onClick={() => setSelectedTags([])} 
+              <Button
+                onClick={() => setSelectedTags([])}
                 className="mt-4 bg-[#111111] hover:bg-[#C49735] text-[#C49735] hover:text-black border border-[#C49735]/40 text-sm font-medium px-6 py-2 h-auto"
               >
                 Ver todos los artículos
@@ -245,8 +244,8 @@ export default function BlogPage() {
                   <Link key={post.id} href={`/blog/${post.slug}`}>
                     <article className="bg-[#111111] rounded-xl border border-[#333]/40 shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-[1.02] hover:border-[#C49735]/40 group">
                       <div className="aspect-[3/2] relative">
-                        <Image 
-                          src={post.coverImage} 
+                        <Image
+                          src={'/mercedes_1.jpg'}
                           alt={post.title}
                           fill
                           className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -294,8 +293,8 @@ export default function BlogPage() {
 
               {hasMore && filteredPosts.length > visiblePosts && (
                 <div className="flex justify-center mt-16">
-                  <Button 
-                    onClick={handleLoadMore} 
+                  <Button
+                    onClick={handleLoadMore}
                     className="bg-[#111111] hover:bg-[#C49735] text-[#C49735] hover:text-black border border-[#C49735]/40 text-sm font-medium px-6 py-2 h-auto flex items-center transition-all duration-300 rounded-full shadow-md"
                   >
                     Mostrar más
